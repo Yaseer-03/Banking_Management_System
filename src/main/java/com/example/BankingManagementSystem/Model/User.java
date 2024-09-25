@@ -24,13 +24,13 @@ public class User {
     private String name;
     private String mobileNumber;
     private String email;
-    private String password; // Hashed password
+    private String password;            // Hashed password
     private LocalDate dateOfBirth;
-    private String role; // e.g., admin, customer
-    private String accountStatus; // e.g., active, suspended
-    private LocalDateTime createdAt; // Account creation timestamp
-    private LocalDateTime updatedAt; // Last update timestamp
-    private boolean isVerified; // Email/phone verification status
+    private String role;                // e.g., admin, customer
+    private String accountStatus;       // e.g., active, suspended
+    private LocalDateTime createdAt;    // Account creation timestamp
+    private LocalDateTime updatedAt;    // Last update timestamp
+    private boolean isVerified;         // Email/phone verification status
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private AddressCustomer addressCustomer;
