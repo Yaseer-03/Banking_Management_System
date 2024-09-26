@@ -11,11 +11,12 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                            // Unique id to identify the unique row
+    private Long id;                                           // Unique id to identify the unique row
 
-    private String accountNumber;                               // Account number (Generate 11 - digit account number)
-    private String accountType;                                 // Account type "savings/current"
+    private String accountNumber;                              // Account number (Generate 11 - digit account number)
+    private String accountType;                                // Account type "savings"
     private LocalDateTime createdAt;                           // Date and time of the account creation
+    private String accountStatus;                              // active, suspended/not active
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "balance_id", referencedColumnName = "id")
@@ -27,7 +28,7 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
-    private Bank bankBranch;
+    private Bank bank;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Transaction> transactions;

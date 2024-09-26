@@ -21,7 +21,6 @@ public class User {
     private String password;                            // Hashed password
     private LocalDate dateOfBirth;                      // Date of birth of the user
     private String role;                                // admin, customer
-    private String accountStatus;                       // active, suspended/not active
     private LocalDateTime createdAt;                    // Account creation timestamp
     private LocalDateTime updatedAt;                    // Last update timestamp
     private boolean isVerified;                         // Email/phone verification status
