@@ -13,18 +13,18 @@ public class User {
         
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
-
-    private String name;
-    private String mobileNumber;
-    private String email;
-    private String password;            // Hashed password
-    private LocalDate dateOfBirth;
-    private String role;                // e.g., admin, customer
-    private String accountStatus;       // e.g., active, suspended
-    private LocalDateTime createdAt;    // Account creation timestamp
-    private LocalDateTime updatedAt;    // Last update timestamp
-    private boolean isVerified;         // Email/phone verification status
+    private long userId;                                // Unique id to identify the unique row
+    private String firstName;                           // user's first name
+    private String lastName;                            // user's last name                                        
+    private String mobileNumber;                        // user's mobile number
+    private String email;                               // user's email
+    private String password;                            // Hashed password
+    private LocalDate dateOfBirth;                      // Date of birth of the user
+    private String role;                                // admin, customer
+    private String accountStatus;                       // active, suspended/not active
+    private LocalDateTime createdAt;                    // Account creation timestamp
+    private LocalDateTime updatedAt;                    // Last update timestamp
+    private boolean isVerified;                         // Email/phone verification status
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private AddressCustomer addressCustomer;

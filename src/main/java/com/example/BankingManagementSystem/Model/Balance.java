@@ -1,9 +1,7 @@
 package com.example.BankingManagementSystem.Model;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -12,10 +10,10 @@ public class Balance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;                                    // Unique id to identify the unique row
 
-    private Double currentBalance;
-    private LocalDateTime lastUpdatedAt;
+    private Double currentBalance;                      // Current balance 
+    private LocalDateTime lastUpdatedAt;                // last updated time of the balance
 
     @OneToOne(mappedBy = "balance")
     private Account account;

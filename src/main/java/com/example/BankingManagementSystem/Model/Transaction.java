@@ -11,11 +11,11 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;                                    // Unique id to identify the unique row
 
-    private LocalDateTime transactionDate;            
-    private Double amount;
-    private String transactionType;                 
+    private LocalDateTime transactionDate;              // Date of transaction
+    private Double amount;                              // Transaction amount
+    private String transactionType;                     // Transaction type:  credit / debit
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)

@@ -1,6 +1,6 @@
+// Address of the customer
 package com.example.BankingManagementSystem.Model;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ public class AddressCustomer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;                                   // Unique id to identify the unique row
 
     private String street;
     private String city;
