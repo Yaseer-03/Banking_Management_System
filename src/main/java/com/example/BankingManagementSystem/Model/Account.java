@@ -27,10 +27,10 @@ public class Account {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "bank_id", nullable = false)
     private Bank bank;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+    private List<Transaction> transactions;  
     
 }

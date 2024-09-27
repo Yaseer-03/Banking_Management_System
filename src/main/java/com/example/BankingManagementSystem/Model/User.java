@@ -34,4 +34,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Account account;                             // One user can have only one account
 
+    // pr check
+
+
 }
