@@ -32,6 +32,6 @@ public class User {
     private List<Loan> loans;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Account account;
+    private Account account;                             // One user can have only one account
 
 }
