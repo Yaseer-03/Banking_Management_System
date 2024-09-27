@@ -31,6 +31,6 @@ public class Account {
     private Bank bank;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+    private List<Transaction> transactions;  
     
 }
