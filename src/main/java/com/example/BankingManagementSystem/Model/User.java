@@ -26,10 +26,10 @@ public class User {
     private boolean isVerified;                         // Email/phone verification status
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private CustomerAddressDetails customerAddressDetails;
+    private CustomerAddressDetails customerAddressDetails; // One user can have only one addressS
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Loan> loans;
+    private List<Loan> loans;                           // One user can have many loans (Home loan, car loan ..etc)
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Account account;                             // One user can have only one account
