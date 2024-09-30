@@ -26,7 +26,7 @@ public class User {
     private boolean isVerified;                         // Email/phone verification status
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private CustomerAddressDetails customerAddressDetails; // One user can have only one addressS
+    private UserAddressDetails customerAddressDetails; // One user can have only one addressS
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Loan> loans;                           // One user can have many loans (Home loan, car loan ..etc)
