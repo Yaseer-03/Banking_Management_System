@@ -18,7 +18,8 @@ public class UserAddressDetails {
     private String zipcode;
     private String country;
 
-    @OneToOne(mappedBy = "addressCustomer")
+    @OneToOne
+    @JoinColumn(name ="user_id")
     private User user;
 
     
