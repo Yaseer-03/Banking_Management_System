@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class CustomerAddressDetails {
+public class UserAddressDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,8 @@ public class CustomerAddressDetails {
     private String zipcode;
     private String country;
 
-    @OneToOne(mappedBy = "addressCustomer")
+    @OneToOne
+    @JoinColumn(name ="user_id")
     private User user;
 
     

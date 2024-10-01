@@ -18,7 +18,7 @@ public class BankBranchAddress {
     private String zipcode;                             
     private String country;
 
-    @OneToOne(mappedBy = "addressBranch")
+    @OneToOne(mappedBy = "bankBranchAddress")
     private Bank bankBranch;
 
     

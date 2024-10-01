@@ -18,7 +18,7 @@ public class Bank {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_branch_id", referencedColumnName = "id")
+    @JoinColumn(name = "branch_address_id", referencedColumnName = "id")
     private BankBranchAddress bankBranchAddress;                        // Address of the bank branch
 
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL)
