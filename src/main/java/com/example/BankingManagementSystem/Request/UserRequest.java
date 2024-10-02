@@ -1,6 +1,6 @@
 package com.example.BankingManagementSystem.Request;
 
-public class UserRegistration {
+public class UserRequest {
     
     private String firstName;
     private String lastName;
@@ -8,4 +8,5 @@ public class UserRegistration {
     private String password;
     private String mobileNumber;
     private String dateOfBirth;
+
 }
