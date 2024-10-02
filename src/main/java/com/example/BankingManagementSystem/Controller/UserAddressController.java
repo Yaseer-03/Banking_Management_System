@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 @RestController
-@RequestMapping("Address")
+@RequestMapping("/api/Address")
 public class UserAddressController{
     
     //* Retrieving address based on user id, add respones also
