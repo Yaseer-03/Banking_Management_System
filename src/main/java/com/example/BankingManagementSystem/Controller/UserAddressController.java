@@ -1,20 +1,18 @@
 package com.example.BankingManagementSystem.Controller;
 
 import org.springframework.web.bind.annotation.*;
+import com.example.BankingManagementSystem.DTO.UserAddressDetailsDTO;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/Address")
 public class UserAddressController{
     
     //* Retrieving address based on user id, add respones also
-    // @GetMapping("/getAddress/{userId}")
-    // public String getUserAddress(@PathVariable UserAddressDetailsResponse userAddressDetails){
-    //     return "get user details";
-    // }
+    @GetMapping("/getAddress/{userId}")
+    public String getUserAddress(@PathVariable UserAddressDetailsDTO userAddressDetails){
+        return "get user details";
+    }
 
     //* Adding address for the user after completing user registration with personal details
     @PostMapping("/addAddress")
