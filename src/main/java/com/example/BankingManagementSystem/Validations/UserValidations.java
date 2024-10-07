@@ -1,4 +1,4 @@
-package com.example.Validations;
+package com.example.BankingManagementSystem.Validations;
 
 import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;

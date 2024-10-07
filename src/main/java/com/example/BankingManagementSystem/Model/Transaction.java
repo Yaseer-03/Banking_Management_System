@@ -3,9 +3,8 @@ package com.example.BankingManagementSystem.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
-import com.example.Enums.ModeOfTransaction;
-import com.example.Enums.TransactionStatus;
-import com.example.Enums.TransactionType;
+import com.example.BankingManagementSystem.Enums.*;
+
 
 @Entity
 @Data

@@ -2,7 +2,7 @@ package com.example.BankingManagementSystem.DTO;
 
 import java.time.LocalDateTime;
 
-import com.example.Enums.*;
+import com.example.BankingManagementSystem.Enums.*;
 
 public class TransactionDTO {
     

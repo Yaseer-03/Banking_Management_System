@@ -1,7 +1,6 @@
 package com.example.BankingManagementSystem.Request;
 
-import com.example.Enums.ModeOfTransaction;
-
+import com.example.BankingManagementSystem.Enums.ModeOfTransaction;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
