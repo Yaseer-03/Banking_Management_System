@@ -1,4 +1,4 @@
-package com.example.BankingManagementSystem;
+package com.example.BankingManagementSystem.Service;
 
 import org.springframework.stereotype.Service;
 
