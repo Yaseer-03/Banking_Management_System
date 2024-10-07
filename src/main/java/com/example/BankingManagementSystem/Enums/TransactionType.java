@@ -1,4 +1,4 @@
-package com.example.Enums;
+package com.example.BankingManagementSystem.Enums;
 
 public enum TransactionType {
     ATM,
