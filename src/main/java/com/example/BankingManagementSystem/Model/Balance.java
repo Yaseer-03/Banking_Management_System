@@ -15,7 +15,7 @@ public class Balance {
     private Double currentBalance;                      // Current balance 
     private LocalDateTime lastUpdatedAt;                // last updated time of the balance
 
-    @OneToOne(mappedBy = "balance")
+    @OneToOne(mappedBy = "balance", cascade = CascadeType.ALL)
     private Account account;
     
 }

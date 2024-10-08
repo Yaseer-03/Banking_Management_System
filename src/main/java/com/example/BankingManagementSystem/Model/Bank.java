@@ -16,7 +16,6 @@ public class Bank {
     private String branchName;
     private String branchCode;                                          // Branch code (IFSC code)
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "branch_address_id", referencedColumnName = "id")
     private BankBranchAddress bankBranchAddress;                        // Address of the bank branch
