@@ -16,8 +16,7 @@ public class BankBranchAddress {
     private String city;
     private String state;
     private String zipcode;                             
-    private String country;
-
+    
     @OneToOne(mappedBy = "bankBranchAddress", cascade = CascadeType.ALL)
     private Bank bankBranch;
     
