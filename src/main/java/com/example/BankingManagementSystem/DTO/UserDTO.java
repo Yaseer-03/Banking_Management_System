@@ -13,6 +13,5 @@ public class UserDTO {
     private LocalDate dateOfBirth;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    // Add Account details..
     
 }

@@ -16,11 +16,9 @@ public class UserAddressDetails {
     private String city;
     private String state;
     private String zipcode;
-    private String country;
 
     @OneToOne
     @JoinColumn(name ="user_id")
     private User user;
-
-    
+       
 }

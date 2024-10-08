@@ -17,6 +17,7 @@ public class Account {
     private String accountType;                                // Account type "savings"
     private LocalDateTime createdAt;                           // Date and time of the account creation
     private String accountStatus;                              // active, suspended/not active
+    private String pin;                                        // pin specific to each account for transaction security
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "balance_id", referencedColumnName = "id")
