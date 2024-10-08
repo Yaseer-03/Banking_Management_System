@@ -19,8 +19,6 @@ public class User {
     private String aadharNumber;                        // user's Aadhar number
     private String email;                               // user's email
     private String password;                            // Hashed password
-    private Long mPin;                                // Mpin : which is used for verification while login
-    private Long pin;                                 // pin : which is for verification while making a transaction 
     private LocalDate dateOfBirth;                      // Date of birth of the user
     private String role;                                // admin, customer
     private LocalDateTime createdAt;                    // Account creation timestamp
