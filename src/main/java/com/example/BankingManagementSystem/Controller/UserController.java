@@ -2,8 +2,6 @@ package com.example.BankingManagementSystem.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.BankingManagementSystem.DTO.UserDTO;
-import com.example.BankingManagementSystem.Model.User;
 import com.example.BankingManagementSystem.Request.LoginRequest;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
 import com.example.BankingManagementSystem.Request.UserRequest;
@@ -20,9 +18,9 @@ public class UserController {
     @Autowired
     private UserAddressDetailsService userAddressDetailsService;
 
-    //* Registering user by taking personal details ( For reference visit userRegistration)
+    //* Registering user by taking personal details
     @PostMapping("/signup/personalDetails")
-    public UserDTO userRegistration(@RequestBody UserRequest userRegistration){
+    public String userRegistration(@RequestBody UserRequest userRegistration){
         return userService.registeringUser(userRegistration);
     }
 
