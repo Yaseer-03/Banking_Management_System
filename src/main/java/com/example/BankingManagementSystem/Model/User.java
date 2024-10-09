@@ -23,10 +23,10 @@ public class User {
     private String role;                                // admin, customer
     private LocalDateTime createdAt;                    // Account creation timestamp
     private LocalDateTime updatedAt;                    // Last update timestamp
-    private boolean isVerified;                         // Email/phone verification status
+    // ? private boolean isVerified;                         // Email/phone verification status
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserAddressDetails userAddressDetails; // One user can have only one addressS
+    private UserAddressDetails userAddressDetails;      // One user can have only one addressS
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Loan> loans;                           // One user can have many loans (Home loan, car loan ..etc)

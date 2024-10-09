@@ -1,11 +1,13 @@
 package com.example.BankingManagementSystem.Request;
 
+import lombok.Data;
+
+@Data
 public class UserAddressDetailsRequest {
 
     private String street;
     private String city;
     private String state;
-    private String zipcode;
-    private String country;
+    private Long zipcode;
     
 }

@@ -13,12 +13,12 @@ public class UserValidations {
     }
 
     // * Validating password
-    public Boolean isPasswordValid(String password) {
+    public Boolean isMpinValid(String mpin) {
         // Password has to contain at least one uppercase letter and one special
         // character
-        String passwordPattern = "^(?=.*[A-Z])(?=.*[!@#&()\\-\\[\\]{}:;',?/*~$^+=<>]).+$";
-        return (password == null || password.length() < 8 || password.length() > 15) ? false
-                : Pattern.matches(passwordPattern, password);
+        String mpinPattern  = "[0-9]{4}";
+        return (mpin == null || mpin.length() < 4 || mpin.length() > 6) ? false
+                : Pattern.matches(mpinPattern, mpin);
     }
  
     // * Validating email id
