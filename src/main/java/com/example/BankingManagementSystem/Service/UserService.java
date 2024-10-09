@@ -1,10 +1,13 @@
 package com.example.BankingManagementSystem.Service;
 
 import java.time.ZoneId;
+import com.example.BankingManagementSystem.Validations.UserValidations;
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
+import java.util.List;
+import com.example.BankingManagementSystem.DTO.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.BankingManagementSystem.DTO.UserDTO;
 import com.example.BankingManagementSystem.Model.*;
 import com.example.BankingManagementSystem.Repository.UserRepo;
 import com.example.BankingManagementSystem.Request.*;
@@ -13,10 +16,18 @@ import com.example.BankingManagementSystem.Request.*;
 public class UserService {
 
     @Autowired
+    private UserValidations userValidations;
+    @Autowired
     private UserRepo userRepo;
 
     // * User registration
-    public UserDTO registeringUser(UserRequest userRequest) {
+    public String registeringUser(UserRequest userRequest) {
+
+        // Validate fields
+        String validationError = userValidations.validateUserFields(userRequest);
+        if (validationError != null) {
+            return validationError;
+        }
 
         User user = new User();
         user.setFirstName(userRequest.getFirstName());
@@ -32,11 +43,27 @@ public class UserService {
         user.setCreatedAt(timeAndDateInIST.toLocalDateTime());
         user.setUpdatedAt(timeAndDateInIST.toLocalDateTime());
 
-        User savedUser = userRepo.save(user);
-        return mapToUserDTO(savedUser);
+        userRepo.save(user);
+        return "User registered successfully" + "User id is: " + user.getUserId();
     }
 
-    public UserDTO mapToUserDTO(User user){
+    // * Retrieving all users 
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepo.findAll();
+        List<UserDTO> userDTOs = users.stream()
+                .map(this::mapToUserDTO)
+                .collect(Collectors.toList());
+        return userDTOs;
+    }
+
+    // * Retrieving user by unique column ( we are considering mobile number )
+    public UserDTO getUserByMobileNumber(String mobileNumber) {
+        User user = userRepo.findByMobileNumber();
+        return mapToUserDTO(user);
+    }
+
+    // * Method to map User entity to UserDTO
+    private UserDTO mapToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
         userDTO.setFirstName(user.getFirstName());
