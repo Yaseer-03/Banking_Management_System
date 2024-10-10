@@ -23,7 +23,7 @@ public class UserService {
     // * User registration
     public String registeringUser(UserRequest userRequest) {
 
-        // Validate fields
+        //* Validate fields
         String validationError = userValidations.validateUserFields(userRequest);
         if (validationError != null) {
             return validationError;

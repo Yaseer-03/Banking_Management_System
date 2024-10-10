@@ -2,11 +2,8 @@ package com.example.BankingManagementSystem.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.BankingManagementSystem.Request.LoginRequest;
-import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
-import com.example.BankingManagementSystem.Request.UserRequest;
-import com.example.BankingManagementSystem.Service.UserAddressDetailsService;
-import com.example.BankingManagementSystem.Service.UserService;
+import com.example.BankingManagementSystem.Request.*;
+import com.example.BankingManagementSystem.Service.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,6 +21,7 @@ public class UserController {
         return userService.registeringUser(userRegistration);
     }
 
+    //* Registering user address details
     @PostMapping("/signup/addressDetails")
     public String userAddressDetails(@RequestParam Long userId, @RequestBody UserAddressDetailsRequest userAddressDetailsRequest){
         userAddressDetailsService.addingUserAddress(userId, userAddressDetailsRequest);
