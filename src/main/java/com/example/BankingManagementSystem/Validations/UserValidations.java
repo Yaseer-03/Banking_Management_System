@@ -1,6 +1,9 @@
 package com.example.BankingManagementSystem.Validations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.BankingManagementSystem.Repository.UserRepo;
 import com.example.BankingManagementSystem.Request.UserRequest;
 import java.time.LocalDate;
 import java.time.Period;
@@ -8,6 +11,9 @@ import java.util.regex.Pattern;
 
 @Component
 public class UserValidations {
+
+    @Autowired
+    private UserRepo userRepo;
 
     // * Null check for every field
     public Boolean isNull(String value) {
@@ -40,7 +46,8 @@ public class UserValidations {
 
     // * Validating date of birth (Age should be 18+)
     public Boolean isDateOfBirthValid(LocalDate dateOfBirth) {
-        if (dateOfBirth == null) return false;
+        if (dateOfBirth == null)
+            return false;
         return Period.between(dateOfBirth, LocalDate.now()).getYears() >= 18;
     }
 
@@ -62,6 +69,10 @@ public class UserValidations {
         if (!isEmailValid(userRequest.getEmail())) return "Please enter a valid email";
         if (!isMpinValid(userRequest.getMpin())) return "Please set a valid 4-digit Mpin";
         if (!isDateOfBirthValid(userRequest.getDateOfBirth())) return "You must be at least 18 years old to register";
+
+        // * Duplication check
+        if(userRepo.existsByEmail(userRequest.getEmail())) return "Email already in use..!";
+        if(userRepo.existsByMobileNumber(userRequest.getMobileNumber())) return "Mobile number is already in use..!";
 
         return null; // * No validation errors
     }
