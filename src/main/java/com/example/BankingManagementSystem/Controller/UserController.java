@@ -47,13 +47,13 @@ public class UserController {
     }
 
     //* Retrieving single user based on user id 
-    @GetMapping("/getUser")
+    @GetMapping("/getUser/{mobileNumber}")
     public String getMethodName(@PathVariable String userId) {
         return "return user based on user id";
     }
 
     //* Deleting user based on user id
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping("/userId}")
     public String deletingUser(@PathVariable Long userId){
         return "user deleted successfully";
     }   
