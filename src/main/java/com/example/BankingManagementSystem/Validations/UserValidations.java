@@ -54,25 +54,37 @@ public class UserValidations {
     // * Centralized validation method
     public String validateUserFields(UserRequest userRequest) {
 
-        // * Null checks
-        if (isNull(userRequest.getFirstName())) return "Please enter your first name";
-        if (isNull(userRequest.getLastName())) return "Please enter your last name";
-        if (isNull(userRequest.getMobileNumber())) return "Please enter your mobile number";
-        if (isNull(userRequest.getAadharNumber())) return "Please enter your Aadhaar number";
-        if (isNull(userRequest.getEmail())) return "Please enter your email";
-        if (isNull(userRequest.getMpin())) return "Please set your Mpin";
-        if (userRequest.getDateOfBirth() == null) return "Please enter your date of birth";
-
-        // * Field validations
-        if (!isMobileNumberValid(userRequest.getMobileNumber())) return "Please enter a valid mobile number";
-        if (!isAadharValid(userRequest.getAadharNumber())) return "Please enter a valid Aadhaar number";
-        if (!isEmailValid(userRequest.getEmail())) return "Please enter a valid email";
-        if (!isMpinValid(userRequest.getMpin())) return "Please set a valid 4-digit Mpin";
-        if (!isDateOfBirthValid(userRequest.getDateOfBirth())) return "You must be at least 18 years old to register";
-
-        // * Duplication check
-        if(userRepo.existsByEmail(userRequest.getEmail())) return "Email already in use..!";
-        if(userRepo.existsByMobileNumber(userRequest.getMobileNumber())) return "Mobile number is already in use..!";
+        // * Null checks && Validations && Duplication check
+        if (isNull(userRequest.getFirstName()))
+            return "Please enter your first name";
+        if (isNull(userRequest.getLastName()))
+            return "Please enter your last name";
+        if (isNull(userRequest.getMobileNumber()))
+            return "Please enter your mobile number";
+        if (!isMobileNumberValid(userRequest.getMobileNumber()))
+            return "Please enter a valid mobile number";
+        if (userRepo.existsByMobileNumber(userRequest.getMobileNumber()))
+            return "Mobile number is already in use..!";
+        if (isNull(userRequest.getAadharNumber()))
+            return "Please enter your Aadhaar number";
+        if (!isAadharValid(userRequest.getAadharNumber()))
+            return "Please enter a valid Aadhaar number";
+        if (userRepo.existsByAadharNumber(userRequest.getAadharNumber()))
+            return "Aadhar number is already in use..!";
+        if (isNull(userRequest.getEmail()))
+            return "Please enter your email";
+        if (!isEmailValid(userRequest.getEmail()))
+            return "Please enter a valid email";
+        if (userRepo.existsByEmail(userRequest.getEmail()))
+            return "Email already in use..!";
+        if (userRequest.getDateOfBirth() == null)
+            return "Please enter your date of birth";
+        if (!isDateOfBirthValid(userRequest.getDateOfBirth()))
+            return "You must be at least 18 years old to register";
+        if (isNull(userRequest.getMpin()))
+            return "Please set your Mpin";
+        if (!isMpinValid(userRequest.getMpin()))
+            return "Please set a valid 4-digit Mpin";
 
         return null; // * No validation errors
     }

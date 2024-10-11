@@ -23,7 +23,7 @@ public class UserService {
     // * User registration
     public String registeringUser(UserRequest userRequest) {
 
-        //* Validate fields
+        // * Validate fields
         String validationError = userValidations.validateUserFields(userRequest);
         if (validationError != null) {
             return validationError;
@@ -44,10 +44,11 @@ public class UserService {
         user.setUpdatedAt(timeAndDateInIST.toLocalDateTime());
 
         userRepo.save(user);
-        return "User registered successfully" + "User id is: " + user.getUserId();
+        return "User registered successfully" + "\n User id is: " + user.getUserId()
+                + "\n Please use the above user id to register you address details";
     }
 
-    // * Retrieving all users 
+    // * Retrieving all users
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepo.findAll();
         List<UserDTO> userDTOs = users.stream()
@@ -58,7 +59,7 @@ public class UserService {
 
     // * Retrieving user by unique column ( we are considering mobile number )
     public UserDTO getUserByMobileNumber(String mobileNumber) {
-        User user = userRepo.findByMobileNumber();
+        User user = userRepo.findByMobileNumber(mobileNumber);
         return mapToUserDTO(user);
     }
 

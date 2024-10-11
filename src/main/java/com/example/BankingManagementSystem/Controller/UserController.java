@@ -53,7 +53,7 @@ public class UserController {
     }
 
     //* Deleting user based on user id
-    @DeleteMapping("/userId}")
+    @DeleteMapping("/{userId}")
     public String deletingUser(@PathVariable Long userId){
         return "user deleted successfully";
     }   
