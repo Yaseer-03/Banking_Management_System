@@ -8,7 +8,7 @@ import com.example.BankingManagementSystem.Model.User;
 public interface UserRepo extends JpaRepository<User, Long> {
 
     Boolean existsByEmail(String email);
-
+    Boolean existsByMobileNumber(String mobileNumber);
     User findByMobileNumber();
 
 }
