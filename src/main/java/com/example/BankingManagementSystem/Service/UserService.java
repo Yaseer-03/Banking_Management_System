@@ -2,9 +2,15 @@ package com.example.BankingManagementSystem.Service;
 
 import java.time.ZoneId;
 import com.example.BankingManagementSystem.Validations.UserValidations;
+
+import jakarta.transaction.Transactional;
+
 import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import com.example.BankingManagementSystem.DTO.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +19,7 @@ import com.example.BankingManagementSystem.Repository.UserRepo;
 import com.example.BankingManagementSystem.Request.*;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -36,7 +43,7 @@ public class UserService {
         user.setAadharNumber(userRequest.getAadharNumber());
         user.setEmail(userRequest.getEmail());
         user.setDateOfBirth(userRequest.getDateOfBirth());
-        user.setMpin(userRequest.getMpin());
+        // user.setMpin(userRequest.getMpin());
         user.setRole("Consumer");
 
         ZonedDateTime timeAndDateInIST = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
@@ -75,6 +82,28 @@ public class UserService {
         userDTO.setCreatedAt(user.getCreatedAt());
         userDTO.setUpdatedAt(user.getUpdatedAt());
         return userDTO;
+    }
+
+    // * Setting mpin for the user
+    public String settingMpin(Long userId, MpinRequest mpinRequest) {
+
+        // Fetch user and handle case where user is not found
+        Optional<User> optionalUser = userRepo.findById(userId);
+        if (optionalUser.isEmpty()) {
+            return "No user found with id: " + userId; // Return user not found message
+        }
+
+        // Validate MPIN
+        String mpinValidationError = userValidations.mpinValidation(mpinRequest);
+        if (mpinValidationError != null) {
+            return mpinValidationError; // Return validation error
+        }
+
+        User user = optionalUser.get();
+        user.setMpin(mpinRequest.getMpin());
+        userRepo.save(user);
+
+        return "Mpin creation successful";
     }
 
 }

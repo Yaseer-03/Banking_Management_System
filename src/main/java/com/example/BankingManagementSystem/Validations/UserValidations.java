@@ -2,8 +2,9 @@ package com.example.BankingManagementSystem.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.example.BankingManagementSystem.Repository.UserRepo;
+import com.example.BankingManagementSystem.Request.MpinRequest;
+import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
 import com.example.BankingManagementSystem.Request.UserRequest;
 import java.time.LocalDate;
 import java.time.Period;
@@ -81,11 +82,30 @@ public class UserValidations {
             return "Please enter your date of birth";
         if (!isDateOfBirthValid(userRequest.getDateOfBirth()))
             return "You must be at least 18 years old to register";
-        if (isNull(userRequest.getMpin()))
-            return "Please set your Mpin";
-        if (!isMpinValid(userRequest.getMpin()))
-            return "Please set a valid 4-digit Mpin";
-
         return null; // * No validation errors
+    }
+
+
+    //* Mpin validation
+    public String mpinValidation(MpinRequest mpinRequest){
+        if (isNull(mpinRequest.getMpin()))
+        return "Please set your Mpin";
+        if (!isMpinValid(mpinRequest.getMpin()))
+        return "Please set a valid 4-digit Mpin";
+        return null;
+    }
+
+    // * User address null checks 
+    //! TODO: Add validation for every property based on the datatype     
+    public String nullCheckForUserAddress(UserAddressDetailsRequest userAddressDetailsRequest) {
+        if (isNull(userAddressDetailsRequest.getStreet()))
+        return "Please enter street name!";
+        if(isNull(userAddressDetailsRequest.getCity()))
+        return "Please enter your city!";
+        if(isNull(userAddressDetailsRequest.getState()))
+        return "please enter your state!";
+        if(isNull(String.valueOf(userAddressDetailsRequest.getZipcode())))
+        return "Please enter your zipcode!";
+        return null;
     }
 }

@@ -12,6 +12,5 @@ public class UserRequest {
     private String aadharNumber;
     private String email; 
     private LocalDate dateOfBirth;
-    private String mpin;
 
 }

@@ -28,6 +28,12 @@ public class UserController {
         return "user address registered successfully";
     }
 
+    //* Creating mpin 
+    @PostMapping("/signup/mpin")
+    public String userMpinCreation(@RequestParam Long userId, @RequestBody MpinRequest mpinRequest){
+        return userService.settingMpin(userId, mpinRequest);
+    }
+
     //* Login in user based on the Mpin ( take the mpin from the user )
     @PostMapping("/login")
     public String loginUser(@RequestParam LoginRequest mPin) { 
