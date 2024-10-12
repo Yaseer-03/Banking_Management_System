@@ -87,13 +87,13 @@ public class UserService {
     // * Setting mpin for the user
     public String settingMpin(Long userId, MpinRequest mpinRequest) {
 
-        // Fetch user and handle case where user is not found
+        // * Fetch user and handle case where user is not found
         Optional<User> optionalUser = userRepo.findById(userId);
         if (optionalUser.isEmpty()) {
             return "No user found with id: " + userId; // Return user not found message
         }
 
-        // Validate MPIN
+        // * Validate MPIN
         String mpinValidationError = userValidations.mpinValidation(mpinRequest);
         if (mpinValidationError != null) {
             return mpinValidationError; // Return validation error
