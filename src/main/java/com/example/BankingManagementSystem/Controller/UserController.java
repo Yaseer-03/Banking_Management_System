@@ -50,7 +50,7 @@ public class UserController {
         return "User details updated successfully";
     }
 
-    //* Retrieving all user's
+    // * Retrieving all user's
     @GetMapping("/getUsers")
     public List<UserDTO> getMethodName() {
         return userService.getAllUsers();
