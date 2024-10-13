@@ -1,5 +1,6 @@
 package com.example.BankingManagementSystem.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import com.example.BankingManagementSystem.Validations.UserValidations;
 
@@ -101,6 +102,7 @@ public class UserService {
 
         User user = optionalUser.get();
         user.setMpin(mpinRequest.getMpin());
+        user.setUpdatedAt(LocalDateTime.now());
         userRepo.save(user);
 
         return "Mpin creation successful";

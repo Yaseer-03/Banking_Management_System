@@ -1,7 +1,11 @@
 package com.example.BankingManagementSystem.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.BankingManagementSystem.DTO.UserDTO;
 import com.example.BankingManagementSystem.Request.*;
 import com.example.BankingManagementSystem.Service.*;
 
@@ -48,8 +52,8 @@ public class UserController {
 
     //* Retrieving all user's
     @GetMapping("/getUsers")
-    public String getMethodName() {
-        return "All users";
+    public List<UserDTO> getMethodName() {
+        return userService.getAllUsers();
     }
 
     //* Retrieving single user based on user id 
