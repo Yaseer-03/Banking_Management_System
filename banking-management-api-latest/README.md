@@ -1,2 +1,0 @@
-# getmyschool-api
-GetMySchool API

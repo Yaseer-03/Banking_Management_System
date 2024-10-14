@@ -1,16 +1,33 @@
 package com.example.BankingManagementSystem.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.BankingManagementSystem.Request.LoginRequest;
+import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
 import com.example.BankingManagementSystem.Request.UserRequest;
+import com.example.BankingManagementSystem.Service.UserAddressDetailsService;
+import com.example.BankingManagementSystem.Service.UserService;
 
-@RestController("/api/user")
+@RestController
+@RequestMapping("/api/user")
 public class UserController {
 
-    //* Registering user by taking personal details ( For reference visit userRegistration)
-    @PostMapping("/signup")
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserAddressDetailsService userAddressDetailsService;
+
+    //* Registering user by taking personal details
+    @PostMapping("/signup/personalDetails")
     public String userRegistration(@RequestBody UserRequest userRegistration){
-        return "User registered successfully";
+        return userService.registeringUser(userRegistration);
+    }
+
+    @PostMapping("/signup/addressDetails")
+    public String userAddressDetails(@RequestParam Long userId, @RequestBody UserAddressDetailsRequest userAddressDetailsRequest){
+        userAddressDetailsService.addingUserAddress(userId, userAddressDetailsRequest);
+        return "user address registered successfully";
     }
 
     //* Login in user based on the Mpin ( take the mpin from the user )
