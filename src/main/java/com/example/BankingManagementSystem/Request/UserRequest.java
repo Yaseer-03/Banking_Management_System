@@ -1,7 +1,5 @@
 package com.example.BankingManagementSystem.Request;
 
-import java.time.LocalDate;
-
 import lombok.Data;
 
 @Data
@@ -12,7 +10,6 @@ public class UserRequest {
     private String mobileNumber;
     private String aadharNumber;
     private String email; 
-    private LocalDate dateOfBirth;
-    private String mpin;
+    private String dateOfBirth;
 
 }

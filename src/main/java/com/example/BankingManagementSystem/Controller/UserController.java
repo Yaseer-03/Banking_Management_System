@@ -1,12 +1,14 @@
 package com.example.BankingManagementSystem.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.BankingManagementSystem.Request.LoginRequest;
-import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
-import com.example.BankingManagementSystem.Request.UserRequest;
-import com.example.BankingManagementSystem.Service.UserAddressDetailsService;
-import com.example.BankingManagementSystem.Service.UserService;
+
+import com.example.BankingManagementSystem.DTO.ResponseWrapper;
+import com.example.BankingManagementSystem.DTO.UserDTO;
+import com.example.BankingManagementSystem.Request.*;
+import com.example.BankingManagementSystem.Service.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,40 +26,51 @@ public class UserController {
         return userService.registeringUser(userRegistration);
     }
 
+    //* Registering user address details
     @PostMapping("/signup/addressDetails")
     public String userAddressDetails(@RequestParam Long userId, @RequestBody UserAddressDetailsRequest userAddressDetailsRequest){
         userAddressDetailsService.addingUserAddress(userId, userAddressDetailsRequest);
         return "user address registered successfully";
     }
 
+    //* Creating mpin 
+    @PostMapping("/signup/mpin")
+    public String userMpinCreation(@RequestParam Long userId, @RequestBody MpinRequest mpinRequest){
+        return userService.settingMpin(userId, mpinRequest);
+    }
+
     //* Login in user based on the Mpin ( take the mpin from the user )
     @PostMapping("/login")
-    public String loginUser(@RequestParam LoginRequest mPin) { 
+    public String loginUser(@RequestParam LoginRequest loginRequest) { 
         return "user logged in successfully";
     }
 
-    //* Updating user details based on the user id
-    @PutMapping("/updateuser/{userid}")
-    public String updatingUser(@PathVariable Long userId, @RequestBody UserRequest userRegistration){
-        return "User details updated successfully";
+    //* Updating user details based on the mobile number
+    @PutMapping("/updateUser/{mobileNumber}")
+    public ResponseWrapper<UserDTO> updatingUser(@PathVariable String mobileNumber, @RequestBody(required = false) UserRequest updateUserDetails){
+        return userService.updatingUserDetails(mobileNumber, updateUserDetails);
+        
     }
+
+    // @PutMapping("/updateMpin")
+    // public String updatingMpin(@)
 
     //* Retrieving all user's
     @GetMapping("/getUsers")
-    public String getMethodName() {
-        return "All users";
+    public List<UserDTO> getMethodName() {
+        return userService.getAllUsers();
     }
 
     //* Retrieving single user based on user id 
-    @GetMapping("/getUser")
-    public String getMethodName(@PathVariable String userId) {
-        return "return user based on user id";
+    @GetMapping("/getUser/{mobileNumber}")
+    public ResponseWrapper<UserDTO> getMethodName(@PathVariable String mobileNumber) {
+        return userService.getUserByMobileNumber(mobileNumber);
     }
 
     //* Deleting user based on user id
-    @DeleteMapping("/user/{userId}")
-    public String deletingUser(@PathVariable Long userId){
-        return "user deleted successfully";
+    @DeleteMapping("/{mobileNumber}")
+    public String deletingUser(@PathVariable String mobileNumber){
+        return userService.userDeletion(mobileNumber);
     }   
     
 }

@@ -1,13 +1,23 @@
 package com.example.BankingManagementSystem.Validations;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
+import com.example.BankingManagementSystem.Repository.UserRepo;
+import com.example.BankingManagementSystem.Request.MpinRequest;
+import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
 import com.example.BankingManagementSystem.Request.UserRequest;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 @Component
 public class UserValidations {
+
+    @Autowired
+    private UserRepo userRepo;
 
     // * Null check for every field
     public Boolean isNull(String value) {
@@ -38,31 +48,130 @@ public class UserValidations {
         return Pattern.matches(emailPattern, email);
     }
 
-    // * Validating date of birth (Age should be 18+)
-    public Boolean isDateOfBirthValid(LocalDate dateOfBirth) {
-        if (dateOfBirth == null) return false;
-        return Period.between(dateOfBirth, LocalDate.now()).getYears() >= 18;
+    public LocalDate isDateOfBirthValid(String dateOfBirthInput) {
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate dateOfBirth;
+
+        try {
+            // Parse the date
+            dateOfBirth = LocalDate.parse(dateOfBirthInput, inputFormatter);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Date of birth must be in DD-MM-YYYY format."); // Return error for
+                                                                                               // invalid format
+        }
+
+        // Additional check for valid day in the month
+        if (dateOfBirth.getDayOfMonth() != Integer.parseInt(dateOfBirthInput.substring(0, 2))) {
+            throw new IllegalArgumentException(
+                    "Invalid date: " + dateOfBirthInput + ". Please check the day and month.");
+        }
+
+        // Validate age
+        if (Period.between(dateOfBirth, LocalDate.now()).getYears() < 18) {
+            throw new IllegalArgumentException("You must be at least 18 years old to register.");
+        }
+
+        return dateOfBirth; // No validation errors
     }
 
     // * Centralized validation method
     public String validateUserFields(UserRequest userRequest) {
 
-        // * Null checks
-        if (isNull(userRequest.getFirstName())) return "Please enter your first name";
-        if (isNull(userRequest.getLastName())) return "Please enter your last name";
-        if (isNull(userRequest.getMobileNumber())) return "Please enter your mobile number";
-        if (isNull(userRequest.getAadharNumber())) return "Please enter your Aadhaar number";
-        if (isNull(userRequest.getEmail())) return "Please enter your email";
-        if (isNull(userRequest.getMpin())) return "Please set your Mpin";
-        if (userRequest.getDateOfBirth() == null) return "Please enter your date of birth";
+        // * Null checks && Validations && Duplication check
+        if (isNull(userRequest.getFirstName()))
+            return "Please enter your first name";
+        if (isNull(userRequest.getLastName()))
+            return "Please enter your last name";
+        if (isNull(userRequest.getMobileNumber()))
+            return "Please enter your mobile number";
+        if (!isMobileNumberValid(userRequest.getMobileNumber()))
+            return "Please enter a valid mobile number";
+        if (userRepo.existsByMobileNumber(userRequest.getMobileNumber()))
+            return "Mobile number is already in use..!";
+        if (isNull(userRequest.getAadharNumber()))
+            return "Please enter your Aadhaar number";
+        if (!isAadharValid(userRequest.getAadharNumber()))
+            return "Please enter a valid Aadhaar number";
+        if (userRepo.existsByAadharNumber(userRequest.getAadharNumber()))
+            return "Aadhar number is already in use..!";
+        if (isNull(userRequest.getEmail()))
+            return "Please enter your email";
+        if (!isEmailValid(userRequest.getEmail()))
+            return "Please enter a valid email";
+        if (userRepo.existsByEmail(userRequest.getEmail()))
+            return "Email already in use..!";
+        if (isNull(userRequest.getDateOfBirth()))
+            return "Please enter your date of birth";
 
-        // * Field validations
-        if (!isMobileNumberValid(userRequest.getMobileNumber())) return "Please enter a valid mobile number";
-        if (!isAadharValid(userRequest.getAadharNumber())) return "Please enter a valid Aadhaar number";
-        if (!isEmailValid(userRequest.getEmail())) return "Please enter a valid email";
-        if (!isMpinValid(userRequest.getMpin())) return "Please set a valid 4-digit Mpin";
-        if (!isDateOfBirthValid(userRequest.getDateOfBirth())) return "You must be at least 18 years old to register";
-
+        try {
+            LocalDate dateOfBirth = isDateOfBirthValid(userRequest.getDateOfBirth());
+        } catch (IllegalArgumentException e) {
+            return e.getMessage(); // Return the error message from validation
+        }
         return null; // * No validation errors
+    }
+
+    // * Centralized validation method for ( Updating API )
+    public String validatingUserFields(UserRequest userRequest, String currentMobileNumber, String currentAadharNumber,
+            String currentEmail) {
+
+        // * Null checks && Validations && Duplication check
+        if (isNull(userRequest.getFirstName()))
+            return "Please enter your first name";
+        if (isNull(userRequest.getLastName()))
+            return "Please enter your last name";
+        if (isNull(userRequest.getMobileNumber()))
+            return "Please enter your mobile number";
+        if (!isMobileNumberValid(userRequest.getMobileNumber()))
+            return "Please enter a valid mobile number";
+        if (!userRequest.getMobileNumber().equals(currentMobileNumber)
+                && userRepo.existsByMobileNumber(userRequest.getMobileNumber()))
+            return "Mobile number is already in use..!";
+        if (isNull(userRequest.getAadharNumber()))
+            return "Please enter your Aadhaar number";
+        if (!isAadharValid(userRequest.getAadharNumber()))
+            return "Please enter a valid Aadhaar number";
+        if (!userRequest.getAadharNumber().equals(currentAadharNumber)
+                && userRepo.existsByAadharNumber(userRequest.getAadharNumber()))
+            return "Aadhar number is already in use..!";
+        if (isNull(userRequest.getEmail()))
+            return "Please enter your email";
+        if (!isEmailValid(userRequest.getEmail()))
+            return "Please enter a valid email";
+        if (!userRequest.getEmail().equals(currentEmail) && userRepo.existsByEmail(userRequest.getEmail()))
+            return "Email already in use..!";
+        if (isNull(userRequest.getDateOfBirth()))
+            return "Please enter your date of birth";
+
+        try {
+            LocalDate dateOfBirth = isDateOfBirthValid(userRequest.getDateOfBirth());
+        } catch (IllegalArgumentException e) {
+            return e.getMessage(); // Return the error message from validation
+        }
+        return null; // * No validation errors
+    }
+
+    // * Mpin validation
+    public String mpinValidation(MpinRequest mpinRequest) {
+        if (isNull(mpinRequest.getMpin()))
+            return "Please set your Mpin";
+        if (!isMpinValid(mpinRequest.getMpin()))
+            return "Please set a valid 4-digit Mpin";
+        return null;
+    }
+
+    // * User address null checks
+    // ! TODO: Add validation for every property based on the datatype
+    public String nullCheckForUserAddress(UserAddressDetailsRequest userAddressDetailsRequest) {
+        if (isNull(userAddressDetailsRequest.getStreet()))
+            return "Please enter street name!";
+        if (isNull(userAddressDetailsRequest.getCity()))
+            return "Please enter your city!";
+        if (isNull(userAddressDetailsRequest.getState()))
+            return "please enter your state!";
+        if (isNull(String.valueOf(userAddressDetailsRequest.getZipcode())))
+            return "Please enter your zipcode!";
+        return null;
     }
 }
