@@ -127,16 +127,20 @@ public class UserService {
     // * updating user details based on mobile number
     public ResponseWrapper<UserDTO> updatingUserDetails(String mobileNumber, UserRequest updateUserDetails) {
         Optional<User> fetchingUser = userRepo.findByMobileNumber(mobileNumber);
+        if (fetchingUser.isEmpty())
+            return new ResponseWrapper<>(null, "No user found with mobile number: " + mobileNumber);
         User user = fetchingUser.get();
+
+        // If user exists, check if the request body is provided
+        if (updateUserDetails == null) {
+            return new ResponseWrapper<>(null, "Request body is required to update user details.");
+        }
 
         // * Validate fields 
         String validationError = userValidations.validatingUserFields(updateUserDetails, user.getMobileNumber(),user.getAadharNumber(), user.getEmail());
         if (validationError != null) {
             return new ResponseWrapper<>(null, validationError);
         }
-
-        if (fetchingUser.isEmpty())
-            return new ResponseWrapper<>(null, "No user found with mobile number: " + mobileNumber);
 
         user.setFirstName(updateUserDetails.getFirstName());
         user.setLastName(updateUserDetails.getLastName());

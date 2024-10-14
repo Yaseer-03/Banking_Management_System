@@ -47,7 +47,7 @@ public class UserController {
 
     //* Updating user details based on the mobile number
     @PutMapping("/updateUser/{mobileNumber}")
-    public ResponseWrapper<UserDTO> updatingUser(@PathVariable String mobileNumber, @RequestBody UserRequest updateUserDetails){
+    public ResponseWrapper<UserDTO> updatingUser(@PathVariable String mobileNumber, @RequestBody(required = false) UserRequest updateUserDetails){
         return userService.updatingUserDetails(mobileNumber, updateUserDetails);
         
     }
