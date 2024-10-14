@@ -1,17 +1,15 @@
 package com.example.BankingManagementSystem.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import com.example.BankingManagementSystem.Validations.UserValidations;
-
 import jakarta.transaction.Transactional;
-
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import com.example.BankingManagementSystem.DTO.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +41,19 @@ public class UserService {
         user.setMobileNumber(userRequest.getMobileNumber());
         user.setAadharNumber(userRequest.getAadharNumber());
         user.setEmail(userRequest.getEmail());
-        user.setDateOfBirth(userRequest.getDateOfBirth());
+
+        // Validate and parse the date of birth using UserValidations
+        try {
+            // LocalDate dateOfBirth =
+            // userValidations.isDateOfBirthValid(userRequest.getDateOfBirth());
+            LocalDate dateOfBirth = userValidations.isDateOfBirthValid(userRequest.getDateOfBirth());
+            userRequest.setDateOfBirth(dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))); // Format it back
+                                                                                                       // if necessary
+            user.setDateOfBirth(dateOfBirth); // Store as LocalDate
+        } catch (IllegalArgumentException e) {
+            return e.getMessage(); // Return the error message from validation
+        }
+
         // user.setMpin(userRequest.getMpin());
         user.setRole("Consumer");
 
@@ -66,9 +76,15 @@ public class UserService {
     }
 
     // * Retrieving user by unique column ( we are considering mobile number )
-    public UserDTO getUserByMobileNumber(String mobileNumber) {
-        User user = userRepo.findByMobileNumber(mobileNumber);
-        return mapToUserDTO(user);
+    public ResponseWrapper<UserDTO> getUserByMobileNumber(String mobileNumber) {
+        Optional<User> fetchingUser = userRepo.findByMobileNumber(mobileNumber);
+
+        if (fetchingUser.isEmpty())
+            return new ResponseWrapper<>(null, "user does not exist with mobile number: " + mobileNumber);
+
+        User user = fetchingUser.get();
+        UserDTO userDTO = mapToUserDTO(user);
+        return new ResponseWrapper<UserDTO>(userDTO, null);
     }
 
     // * Method to map User entity to UserDTO
@@ -106,6 +122,51 @@ public class UserService {
         userRepo.save(user);
 
         return "Mpin creation successful";
+    }
+
+    // * updating user details based on mobile number
+    public ResponseWrapper<UserDTO> updatingUserDetails(String mobileNumber, UserRequest updateUserDetails) {
+        Optional<User> fetchingUser = userRepo.findByMobileNumber(mobileNumber);
+        User user = fetchingUser.get();
+
+        // * Validate fields 
+        String validationError = userValidations.validatingUserFields(updateUserDetails, user.getMobileNumber(),user.getAadharNumber(), user.getEmail());
+        if (validationError != null) {
+            return new ResponseWrapper<>(null, validationError);
+        }
+
+        if (fetchingUser.isEmpty())
+            return new ResponseWrapper<>(null, "No user found with mobile number: " + mobileNumber);
+
+        user.setFirstName(updateUserDetails.getFirstName());
+        user.setLastName(updateUserDetails.getLastName());
+        user.setMobileNumber(updateUserDetails.getMobileNumber());
+        user.setAadharNumber(updateUserDetails.getAadharNumber());
+        user.setEmail(updateUserDetails.getEmail());
+        // user.setDateOfBirth(updateUserDetails.getDateOfBirth());
+        // Validate and parse the date of birth using UserValidations
+        try {
+            LocalDate dateOfBirth = userValidations.isDateOfBirthValid(updateUserDetails.getDateOfBirth());
+            user.setDateOfBirth(dateOfBirth); // Store as LocalDate
+        } catch (IllegalArgumentException e) {
+            return new ResponseWrapper<>(null, e.getMessage()); // Return the error message from validation
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepo.save(user);
+        UserDTO convertingToUserDTO = mapToUserDTO(user);
+        return new ResponseWrapper<UserDTO>(convertingToUserDTO, null);
+
+    }
+
+    // * Delete user based on mobile number
+    public String userDeletion(String mobileNumber) {
+        Optional<User> findingUser = userRepo.findByMobileNumber(mobileNumber);
+        if (findingUser.isEmpty()) {
+            return "No user found with mobile number: " + mobileNumber;
+        }
+        userRepo.deleteByMobileNumber(mobileNumber);
+        return "user deleted successfully";
     }
 
 }
