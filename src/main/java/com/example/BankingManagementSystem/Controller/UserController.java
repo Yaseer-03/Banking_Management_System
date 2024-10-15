@@ -1,12 +1,9 @@
 package com.example.BankingManagementSystem.Controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.BankingManagementSystem.DTO.ResponseWrapper;
-import com.example.BankingManagementSystem.DTO.UserDTO;
+import com.example.BankingManagementSystem.DTO.*;
 import com.example.BankingManagementSystem.Request.*;
 import com.example.BankingManagementSystem.Service.*;
 
