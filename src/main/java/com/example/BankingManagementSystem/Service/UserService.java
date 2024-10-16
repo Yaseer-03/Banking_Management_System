@@ -54,7 +54,6 @@ public class UserService {
             return e.getMessage(); // Return the error message from validation
         }
 
-        // user.setMpin(userRequest.getMpin());
         user.setRole("Consumer");
 
         ZonedDateTime timeAndDateInIST = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
