@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.example.BankingManagementSystem.Model.User;
 
+
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
 
@@ -14,5 +15,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
     Boolean existsByAadharNumber(String aadharNumber);
     Optional <User> findByMobileNumber(String mobileNumber);
     void deleteByMobileNumber(String mobileNumber);
+    Optional <User> findById(Long userId);
 
 }

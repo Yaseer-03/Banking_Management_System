@@ -161,6 +161,15 @@ public class UserValidations {
         return null;
     }
 
+    // * Validating pincode 
+
+    public String zipCodeValidation(String zipcode){
+        if(zipcode.length() != 6){
+            return "Please enter valid zipcode";
+        }
+        return null;
+    }
+
     // * User address null checks
     // ! TODO: Add validation for every property based on the datatype
     public String nullCheckForUserAddress(UserAddressDetailsRequest userAddressDetailsRequest) {
@@ -172,6 +181,11 @@ public class UserValidations {
             return "please enter your state!";
         if (isNull(String.valueOf(userAddressDetailsRequest.getZipcode())))
             return "Please enter your zipcode!";
+           // Validate the pincode
+    String pinValidationResult = zipCodeValidation(String.valueOf(userAddressDetailsRequest.getZipcode()));
+    if (pinValidationResult != null) {
+        return pinValidationResult;
+    }
         return null;
     }
 }
