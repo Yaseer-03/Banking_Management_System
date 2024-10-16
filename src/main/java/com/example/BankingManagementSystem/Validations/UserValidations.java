@@ -103,12 +103,7 @@ public class UserValidations {
             return "Email already in use..!";
         if (isNull(userRequest.getDateOfBirth()))
             return "Please enter your date of birth";
-
-        try {
-            LocalDate dateOfBirth = isDateOfBirthValid(userRequest.getDateOfBirth());
-        } catch (IllegalArgumentException e) {
-            return e.getMessage(); // Return the error message from validation
-        }
+            
         return null; // * No validation errors
     }
 
@@ -144,11 +139,6 @@ public class UserValidations {
         if (isNull(userRequest.getDateOfBirth()))
             return "Please enter your date of birth";
 
-        try {
-            LocalDate dateOfBirth = isDateOfBirthValid(userRequest.getDateOfBirth());
-        } catch (IllegalArgumentException e) {
-            return e.getMessage(); // Return the error message from validation
-        }
         return null; // * No validation errors
     }
 
@@ -161,10 +151,10 @@ public class UserValidations {
         return null;
     }
 
-    // * Validating pincode 
+    // * Validating pincode
 
-    public String zipCodeValidation(String zipcode){
-        if(zipcode.length() != 6){
+    public String zipCodeValidation(String zipcode) {
+        if (zipcode.length() != 6) {
             return "Please enter valid zipcode";
         }
         return null;
@@ -181,11 +171,11 @@ public class UserValidations {
             return "please enter your state!";
         if (isNull(String.valueOf(userAddressDetailsRequest.getZipcode())))
             return "Please enter your zipcode!";
-           // Validate the pincode
-    String pinValidationResult = zipCodeValidation(String.valueOf(userAddressDetailsRequest.getZipcode()));
-    if (pinValidationResult != null) {
-        return pinValidationResult;
-    }
+        // Validate the pincode
+        String pinValidationResult = zipCodeValidation(String.valueOf(userAddressDetailsRequest.getZipcode()));
+        if (pinValidationResult != null) {
+            return pinValidationResult;
+        }
         return null;
     }
 }

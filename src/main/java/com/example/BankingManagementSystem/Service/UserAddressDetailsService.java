@@ -11,12 +11,16 @@ import com.example.BankingManagementSystem.Model.User;
 import com.example.BankingManagementSystem.Model.UserAddressDetails;
 import com.example.BankingManagementSystem.Repository.*;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
+import com.example.BankingManagementSystem.Validations.UserValidations;
 
 @Service
 public class UserAddressDetailsService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private UserValidations userValidations;
 
     @Autowired
     private UserAddressDetailsRepo userAddressDetailsRepo;
@@ -32,11 +36,24 @@ public class UserAddressDetailsService {
         return userAddressDetailsDTO;
     }
 
-    public ResponseWrapper<UserAddressDetailsDTO> addingUserAddress(Long userId, UserAddressDetailsRequest userAddressDetailsRequest) {
+    // * Adding address detailss
+    public ResponseWrapper<UserAddressDetailsDTO> addingUserAddress(Long userId,
+            UserAddressDetailsRequest userAddressDetailsRequest) {
         // * Fetch the registered user from the database
         Optional<User> fetchingUser = userRepo.findById(userId);
-        if(fetchingUser.isEmpty())
+        if (fetchingUser.isEmpty())
             return new ResponseWrapper<UserAddressDetailsDTO>(null, "user not found with id: " + userId);
+
+        String addressValidation = userValidations.nullCheckForUserAddress(userAddressDetailsRequest);
+        if (addressValidation != null) {
+            return new ResponseWrapper<>(null, addressValidation); // * Returning the error if the validation failes
+        }
+
+        // * Validate the user address request before updating
+        String validatingFields = userValidations.nullCheckForUserAddress(userAddressDetailsRequest);
+        if (validatingFields != null) {
+            return new ResponseWrapper<>(null, validatingFields);
+        }
         // * Create a new UserAddressDetails instance
         UserAddressDetails userAddressDetails = new UserAddressDetails();
         userAddressDetails.setStreet(userAddressDetailsRequest.getStreet());
@@ -76,6 +93,12 @@ public class UserAddressDetailsService {
         if (existingAddressOpt.isEmpty()) {
             return new ResponseWrapper<>(null,
                     "Address details not found for user with mobile number: " + mobileNumber);
+        }
+
+        // * Validate the user address request before updating
+        String addressValidation = userValidations.nullCheckForUserAddress(userAddressDetailsRequest);
+        if (addressValidation != null) {
+            return new ResponseWrapper<>(null, addressValidation);
         }
 
         UserAddressDetails existingAddress = existingAddressOpt.get();
