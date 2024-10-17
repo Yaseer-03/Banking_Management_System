@@ -6,5 +6,7 @@ import com.example.BankingManagementSystem.Model.Bank;
 
 @Repository
 public interface BankRepo extends JpaRepository<Bank, Long> {
+
+    Bank findByBankName(String string);
     
 }

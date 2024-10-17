@@ -24,7 +24,7 @@ public class Account {
     private Balance balance;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne

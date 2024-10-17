@@ -5,23 +5,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseWrapper<T> {
     private T data;
-    private String errorMessage;
+    private String message;
 
-    public ResponseWrapper(T data, String errorMessage) {
+    public ResponseWrapper(T data, String message) {
         this.data = data;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
 
     public T getData() {
         return data;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
     public boolean hasError() {
-        return errorMessage != null;
+        return message != null;
     }
 }
 

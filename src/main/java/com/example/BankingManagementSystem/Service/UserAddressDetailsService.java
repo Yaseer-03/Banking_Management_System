@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.time.LocalDateTime;
+import com.example.BankingManagementSystem.CustomClasses.UserValidations;
 import com.example.BankingManagementSystem.DTO.ResponseWrapper;
 import com.example.BankingManagementSystem.DTO.UserAddressDetailsDTO;
 import com.example.BankingManagementSystem.Model.User;
 import com.example.BankingManagementSystem.Model.UserAddressDetails;
 import com.example.BankingManagementSystem.Repository.*;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
-import com.example.BankingManagementSystem.Validations.UserValidations;
 
 @Service
 public class UserAddressDetailsService {
