@@ -5,10 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.BankingManagementSystem.DTO.AccountDTO;
+import com.example.BankingManagementSystem.DTO.BalanceDTO;
 import com.example.BankingManagementSystem.DTO.ResponseWrapper;
 import com.example.BankingManagementSystem.Request.AccountRequest;
+import com.example.BankingManagementSystem.Request.BalanceRequest;
 import com.example.BankingManagementSystem.Service.AccountService;
-
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class AccountController {
                              .body(response);
     }
 
-    // * Get account by user ID
+    // * Get account by account number
     @GetMapping("/getAccount")
     public ResponseEntity<ResponseWrapper<AccountDTO>> getAccount(@RequestParam String accountNumber) {
         ResponseWrapper<AccountDTO> response = accountService.getAccount(accountNumber);

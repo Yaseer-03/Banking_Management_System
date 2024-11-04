@@ -10,6 +10,7 @@ import com.example.BankingManagementSystem.DTO.*;
 import com.example.BankingManagementSystem.Model.*;
 import com.example.BankingManagementSystem.Repository.*;
 import com.example.BankingManagementSystem.Request.AccountRequest;
+import com.example.BankingManagementSystem.Request.BalanceRequest;
 import jakarta.transaction.Transactional;
 import com.example.BankingManagementSystem.CustomClasses.*;
 
