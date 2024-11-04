@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.BankingManagementSystem.Request.BalanceRequest;
 @Component
-public class BalancebalanceRequestValidation {
+public class BalanceRequestValidation {
 
     // * Null check
     public Boolean isNullOrEmpty(String value) {
