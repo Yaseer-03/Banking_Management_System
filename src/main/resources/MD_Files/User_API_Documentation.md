@@ -186,7 +186,7 @@ This documentation outlines the available endpoints for managing user accounts, 
 - Create seperate package to handle exception. **Status** Incomplete.
 - If user deletes his profile details then the user account and other such as loan, balance entities has to be deleted, if user has account and other such as loan, balance entities these should be deleted first and then only user can delete his profile. **Status** Incomplete.
 - While retriving all user's, use reactive programming ( Get the user's data which is fetched first and vice versa..) **Status** Incomplete.
-- After successfully complete's his registration (after mpin setup ) send a response class which includes user personal details and user address details in it.  **Status** Incomplete.
+- After successfully complete's his registration (after mpin setup ) send a response class which includes user personal details and user address details in it.  **Status** Complete.
 
 
 ### Sensitive Data Encryption Requirements
