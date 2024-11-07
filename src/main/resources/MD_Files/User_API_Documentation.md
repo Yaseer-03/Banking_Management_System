@@ -172,16 +172,21 @@ This documentation outlines the available endpoints for managing user accounts, 
 
 ## Work In Progress
 
-## Testing Checklist (Updated: 11-10-2024)
+## Need To Implement (Updated: 11-10-2024)
+
 - User registration with null values (check individual properties). **Status:** Done.
 - User registration by breaking validations (check individual properties). **Status:** Done.
 - User registration with existing email and mobile number. **Status:** Done.
 - Parse error handling for date of birth input (DD-MM-YYYY to YYYY-MM-DD). **Status:** Done.
 - Retrieve all users and by user ID (valid and invalid). **Status:** Done.
 - Aadhar card number must be unique. **Status:** Done.
+- While retriving user details show everything related to the such as address and exclude those properties or show the properties as xxxx which are encrypted (such as pin and mpin) **Status** Incomplete.
 - Login user with mPIN and mobile number. **Status** Incomplete.
 - Update mPIN requires mobile number verification. **Status** Incomplete.
 - Create seperate package to handle exception. **Status** Incomplete.
+- If user deletes his profile details then the user account and other such as loan, balance entities has to be deleted, if user has account and other such as loan, balance entities these should be deleted first and then only user can delete his profile. **Status** Incomplete.
+- While retriving all user's, use reactive programming ( Get the user's data which is fetched first and vice versa..) **Status** Incomplete.
+- After successfully complete's his registration (after mpin setup ) send a response class which includes user personal details and user address details in it.  **Status** Incomplete.
 
 
 ### Sensitive Data Encryption Requirements

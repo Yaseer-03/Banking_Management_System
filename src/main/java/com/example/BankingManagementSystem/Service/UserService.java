@@ -15,6 +15,7 @@ import com.example.BankingManagementSystem.Dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.BankingManagementSystem.Model.*;
+import com.example.BankingManagementSystem.Repository.UserAddressDetailsRepo;
 import com.example.BankingManagementSystem.Repository.UserRepo;
 import com.example.BankingManagementSystem.Request.*;
 
@@ -22,6 +23,10 @@ import com.example.BankingManagementSystem.Request.*;
 @Transactional
 public class UserService {
 
+    @Autowired
+    private UserAddressDetailsService userAddressDetailsService;
+    @Autowired
+    private UserAddressDetailsRepo userAddressDetailsRepo;
     @Autowired
     private UserValidations userValidations;
     @Autowired
@@ -79,12 +84,16 @@ public class UserService {
     public ResponseWrapper<UserDTO> getUserByMobileNumber(String mobileNumber) {
         Optional<User> fetchingUser = userRepo.findByMobileNumber(mobileNumber);
 
+        
         if (fetchingUser.isEmpty())
             return new ResponseWrapper<>(null, "user does not exist with mobile number: " + mobileNumber);
 
         User user = fetchingUser.get();
+
+        // todo: fetch the address of the user using user id in user address details entity and include the address details also in user response
         UserDTO userDTO = mapToUserDTO(user);
-        return new ResponseWrapper<UserDTO>(userDTO, null);
+        
+        return new ResponseWrapper<UserDTO>(userDTO, "User details fetched successful");
     }
 
     // * Method to map User entity to UserDTO
