@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Optional;
 import com.example.BankingManagementSystem.CustomClasses.UserValidations;
-import com.example.BankingManagementSystem.DTO.*;
+import com.example.BankingManagementSystem.Dto.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.BankingManagementSystem.Model.*;

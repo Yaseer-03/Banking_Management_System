@@ -1,5 +1,4 @@
-package com.example.BankingManagementSystem.DTO;
-
+package com.example.BankingManagementSystem.Dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

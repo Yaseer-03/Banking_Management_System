@@ -6,13 +6,14 @@ import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
-import com.example.BankingManagementSystem.DTO.*;
+
 import com.example.BankingManagementSystem.Model.*;
 import com.example.BankingManagementSystem.Repository.*;
 import com.example.BankingManagementSystem.Request.AccountRequest;
 import com.example.BankingManagementSystem.Request.BalanceRequest;
 import jakarta.transaction.Transactional;
 import com.example.BankingManagementSystem.CustomClasses.*;
+import com.example.BankingManagementSystem.Dto.*;
 
 @Service
 @Transactional
@@ -28,6 +29,9 @@ public class AccountService {
     private UserRepo userRepo;
 
     @Autowired
+    private BankService bankService;
+
+    @Autowired
     private AccountValidation accountValidation;
 
     public ResponseWrapper<AccountDTO> creatingAccount(Long userId, AccountRequest accountRequest) {
@@ -40,8 +44,7 @@ public class AccountService {
             return new ResponseWrapper<>(null, "Account already exists for the user with ID: " + userId);
         }
 
-        
-        // * Validate fields 
+        // * Validate fields
         String validationError = accountValidation.validatePin(accountRequest);
         if (validationError != null) {
             return new ResponseWrapper<>(null, validationError);
@@ -67,6 +70,8 @@ public class AccountService {
         account.setAccountType("SAVINGS");
         account.setAccountStatus("ACTIVE");
         account.setUser(user);
+        BankBranchAddress branchAddressId = bankService.assignRandomBankBranchAddress();
+        account.setBankBranchAddress(branchAddressId);
         account.setBank(fetchingBank);
         account.setBalance(balance); // Assign the balance to the account
 
@@ -100,6 +105,20 @@ public class AccountService {
         accountDTO.setCreatedAt(account.getCreatedAt());
         accountDTO.setAccountType(account.getAccountType());
         accountDTO.setAccountStatus(account.getAccountStatus());
+
+        BankBranchAddressDTO branchAddressDTO = null;
+        // Set BankBranchAddressDTO
+        if (account.getBankBranchAddress() != null) {
+            branchAddressDTO = new BankBranchAddressDTO();
+            branchAddressDTO.setId(account.getBankBranchAddress().getId());
+            branchAddressDTO.setBranchName(account.getBankBranchAddress().getBranchName());
+            branchAddressDTO.setStreet(account.getBankBranchAddress().getState());
+            branchAddressDTO.setCity(account.getBankBranchAddress().getCity());
+            branchAddressDTO.setState(account.getBankBranchAddress().getState());
+            branchAddressDTO.setZipcode(account.getBankBranchAddress().getZipcode());
+
+        }
+        accountDTO.setBankBranchAddressDTO(branchAddressDTO);
 
         return accountDTO;
     }

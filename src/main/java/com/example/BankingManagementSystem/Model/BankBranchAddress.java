@@ -1,6 +1,7 @@
 // Address of the bank branch
 package com.example.BankingManagementSystem.Model;
 
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,13 +12,14 @@ public class BankBranchAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                    // Unique id to identify the unique row
-
-    private String street;                             
+                             
+    private String branchName;
     private String city;
+    private String district;
     private String state;
     private String zipcode;                             
     
-    @OneToOne(mappedBy = "bankBranchAddress", cascade = CascadeType.ALL)
-    private Bank bankBranch;
+    @OneToMany(mappedBy = "bankBranchAddress", cascade = CascadeType.ALL)
+    private List<Account> accounts;
     
 }

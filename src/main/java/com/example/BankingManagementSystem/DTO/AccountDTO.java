@@ -1,4 +1,4 @@
-package com.example.BankingManagementSystem.DTO;
+package com.example.BankingManagementSystem.Dto;
 
 import java.time.LocalDateTime;
 
@@ -11,5 +11,7 @@ public class AccountDTO {
     private String accountType;
     private LocalDateTime createdAt;
     private String accountStatus;
+
+    private BankBranchAddressDTO bankBranchAddressDTO;
 
 }

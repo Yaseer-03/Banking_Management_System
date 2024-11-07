@@ -3,9 +3,9 @@ package com.example.BankingManagementSystem.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.BankingManagementSystem.DTO.BankBranchAddress;
-import com.example.BankingManagementSystem.DTO.BankDTO;
-import com.example.BankingManagementSystem.DTO.ResponseWrapper;
+import com.example.BankingManagementSystem.Dto.BankBranchAddressDTO;
+import com.example.BankingManagementSystem.Dto.BankDTO;
+import com.example.BankingManagementSystem.Dto.ResponseWrapper;
 import com.example.BankingManagementSystem.Request.BankRequest;
 import com.example.BankingManagementSystem.Service.BankService;
 

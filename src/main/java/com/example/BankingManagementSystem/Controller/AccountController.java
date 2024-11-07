@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.BankingManagementSystem.DTO.AccountDTO;
-import com.example.BankingManagementSystem.DTO.BalanceDTO;
-import com.example.BankingManagementSystem.DTO.ResponseWrapper;
+
+import com.example.BankingManagementSystem.Dto.AccountDTO;
+import com.example.BankingManagementSystem.Dto.ResponseWrapper;
 import com.example.BankingManagementSystem.Request.AccountRequest;
 import com.example.BankingManagementSystem.Request.BalanceRequest;
 import com.example.BankingManagementSystem.Service.AccountService;

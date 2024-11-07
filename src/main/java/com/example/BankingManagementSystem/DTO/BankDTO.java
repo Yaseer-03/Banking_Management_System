@@ -1,4 +1,4 @@
-package com.example.BankingManagementSystem.DTO;
+package com.example.BankingManagementSystem.Dto;
 
 import lombok.Data;
 

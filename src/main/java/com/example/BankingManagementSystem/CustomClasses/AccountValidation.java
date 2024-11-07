@@ -27,7 +27,7 @@ public String validatePin(AccountRequest accountRequest) {
 
     // Check if the pin is null or empty
     if (isNull(accountRequest.getPin())) {
-        return "Please set your Mpin";
+        return "Please set your pin";
     }
 
     // Check if the pin is a valid 4-digit number

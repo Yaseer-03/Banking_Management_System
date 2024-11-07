@@ -1,7 +1,8 @@
 package com.example.BankingManagementSystem.Controller;
 
 import org.springframework.web.bind.annotation.*;
-import com.example.BankingManagementSystem.DTO.UserAddressDetailsDTO;
+
+import com.example.BankingManagementSystem.Dto.UserAddressDetailsDTO;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
 
 @RestController
