@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import com.example.BankingManagementSystem.CustomClasses.UserValidations;
 import com.example.BankingManagementSystem.Dto.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.BankingManagementSystem.Model.*;
@@ -23,8 +22,6 @@ import com.example.BankingManagementSystem.Request.*;
 @Transactional
 public class UserService {
 
-    @Autowired
-    private UserAddressDetailsService userAddressDetailsService;
     @Autowired
     private UserAddressDetailsRepo userAddressDetailsRepo;
     @Autowired
@@ -71,6 +68,7 @@ public class UserService {
                 + "\n Please use the above user id to register you address details";
     }
 
+    // TODO: Implement reactive programming for the below method.
     // * Retrieving all users
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepo.findAll();
@@ -80,20 +78,19 @@ public class UserService {
         return userDTOs;
     }
 
-    // * Retrieving user by unique column ( we are considering mobile number )
+    // * Retrieving user by unique column ( we are considering mobile number as
+    // unique )
     public ResponseWrapper<UserDTO> getUserByMobileNumber(String mobileNumber) {
         Optional<User> fetchingUser = userRepo.findByMobileNumber(mobileNumber);
 
-        
         if (fetchingUser.isEmpty())
             return new ResponseWrapper<>(null, "user does not exist with mobile number: " + mobileNumber);
 
         User user = fetchingUser.get();
 
-        // todo: fetch the address of the user using user id in user address details entity and include the address details also in user response
         UserDTO userDTO = mapToUserDTO(user);
-        
-        return new ResponseWrapper<UserDTO>(userDTO, "User details fetched successful");
+
+        return new ResponseWrapper<UserDTO>(userDTO, "User profile retrieved successful");
     }
 
     // * Method to map User entity to UserDTO
@@ -107,22 +104,34 @@ public class UserService {
         userDTO.setDateOfBirth(user.getDateOfBirth());
         userDTO.setCreatedAt(user.getCreatedAt());
         userDTO.setUpdatedAt(user.getUpdatedAt());
+        Optional<UserAddressDetails> fetchingUserAddressDetails = userAddressDetailsRepo.findByUser_UserId(user.getUserId());
+        fetchingUserAddressDetails.ifPresent(addressDetails -> {
+            UserAddressDetailsDTO addressDTO = new UserAddressDetailsDTO();
+            addressDTO.setId(addressDetails.getId());
+            addressDTO.setStreet(addressDetails.getStreet());
+            addressDTO.setCity(addressDetails.getCity());
+            addressDTO.setDistrict(addressDetails.getDistrict());
+            addressDTO.setState(addressDetails.getState());
+            addressDTO.setZipcode(addressDetails.getZipcode());
+            userDTO.setUserAddressDetails(addressDTO);
+        });
         return userDTO;
     }
 
     // * Setting mpin for the user
-    public String settingMpin(Long userId, MpinRequest mpinRequest) {
+    public ResponseWrapper<UserDTO> settingMpin(Long userId, MpinRequest mpinRequest) {
 
         // * Fetch user and handle case where user is not found
         Optional<User> optionalUser = userRepo.findById(userId);
         if (optionalUser.isEmpty()) {
-            return "No user found with id: " + userId; // Return user not found message
+            return new ResponseWrapper<UserDTO>(null, "No user found with id: " + userId); // Return user not found
+                                                                                           // message
         }
 
         // * Validate MPIN
         String mpinValidationError = userValidations.mpinValidation(mpinRequest);
         if (mpinValidationError != null) {
-            return mpinValidationError; // Return validation error
+            return new ResponseWrapper<>(null, mpinValidationError); // Return validation error
         }
 
         User user = optionalUser.get();
@@ -130,7 +139,8 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now());
         userRepo.save(user);
 
-        return "Mpin creation successful";
+        UserDTO userDTO = mapToUserDTO(user);
+        return new ResponseWrapper<UserDTO>(userDTO, "User profile created successfully");
     }
 
     // * updating user details based on mobile number
@@ -145,8 +155,9 @@ public class UserService {
             return new ResponseWrapper<>(null, "Request body is required to update user details.");
         }
 
-        // * Validate fields 
-        String validationError = userValidations.validatingUserFields(updateUserDetails, user.getMobileNumber(),user.getAadharNumber(), user.getEmail());
+        // * Validate fields
+        String validationError = userValidations.validatingUserFields(updateUserDetails, user.getMobileNumber(),
+                user.getAadharNumber(), user.getEmail());
         if (validationError != null) {
             return new ResponseWrapper<>(null, validationError);
         }
@@ -168,7 +179,7 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now());
         userRepo.save(user);
         UserDTO convertingToUserDTO = mapToUserDTO(user);
-        return new ResponseWrapper<UserDTO>(convertingToUserDTO, null);
+        return new ResponseWrapper<UserDTO>(convertingToUserDTO, "User Details updated successfully");
 
     }
 

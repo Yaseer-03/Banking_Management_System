@@ -52,7 +52,7 @@ public class UserController {
 
     // * Creating mpin
     @PostMapping("/signup/mpin")
-    public String userMpinCreation(@RequestParam Long userId, @RequestBody MpinRequest mpinRequest) {
+    public ResponseWrapper<UserDTO> userMpinCreation(@RequestParam Long userId, @RequestBody MpinRequest mpinRequest) {
         return userService.settingMpin(userId, mpinRequest);
     }
 

@@ -20,6 +20,6 @@ public class UserDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // private UserAddressDetailsDTO userAddressDetailsDTO;
+    private UserAddressDetailsDTO userAddressDetails;
     
 }

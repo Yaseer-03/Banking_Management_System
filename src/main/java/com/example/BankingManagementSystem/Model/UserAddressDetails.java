@@ -14,11 +14,12 @@ public class UserAddressDetails {
 
     private String street;
     private String city;
+    private String district;
     private String state;
     private Long zipcode;
 
     @OneToOne
-    @JoinColumn(name ="user_id")
+    @JoinColumn(name ="user_id",referencedColumnName = "userId")
     private User user;
        
 }

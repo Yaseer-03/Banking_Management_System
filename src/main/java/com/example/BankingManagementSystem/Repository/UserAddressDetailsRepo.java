@@ -8,7 +8,6 @@ import com.example.BankingManagementSystem.Model.UserAddressDetails;
 
 @Repository
 public interface UserAddressDetailsRepo extends JpaRepository<UserAddressDetails, Long> {
-
     Optional<UserAddressDetails> findByUser_UserId(Long userId);
     
 }
