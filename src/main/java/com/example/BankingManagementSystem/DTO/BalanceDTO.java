@@ -6,6 +6,6 @@ import lombok.Data;
 public class BalanceDTO {
     
     private Double currentBalance;
-    private LocalDateTime lastUpdatedAt;
+    private String lastUpdatedAt;
 
 }

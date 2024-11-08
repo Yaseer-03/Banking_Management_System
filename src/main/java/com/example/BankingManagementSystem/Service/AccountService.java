@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.example.BankingManagementSystem.Model.*;
 import com.example.BankingManagementSystem.Repository.*;
@@ -101,8 +102,13 @@ public class AccountService {
 
     private AccountDTO convertAccountToDTO(Account account) {
         AccountDTO accountDTO = new AccountDTO();
+
+        DateTimeFormatter dateAndTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss - dd/MM/yyyy");
+
         accountDTO.setAccountNumber(account.getAccountNumber());
-        accountDTO.setCreatedAt(account.getCreatedAt());
+
+
+        accountDTO.setCreatedAt(account.getCreatedAt().format(dateAndTimeFormatter));
         accountDTO.setAccountType(account.getAccountType());
         accountDTO.setAccountStatus(account.getAccountStatus());
 

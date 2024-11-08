@@ -1,5 +1,6 @@
 package com.example.BankingManagementSystem.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +43,12 @@ public class BalanceService {
         Balance balance =   accountExist.getBalance();
 
         BalanceDTO  balanceResponse = new BalanceDTO();
-        balanceResponse.setCurrentBalance(balance.getCurrentBalance());
-        balanceResponse.setLastUpdatedAt(balance.getLastUpdatedAt());
 
-        return new ResponseWrapper<BalanceDTO>(balanceResponse, null);
+        DateTimeFormatter dateAndTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss - dd/MM/yyyy");
+        balanceResponse.setCurrentBalance(balance.getCurrentBalance());
+        balanceResponse.setLastUpdatedAt(balance.getLastUpdatedAt().format(dateAndTimeFormatter));
+
+        return new ResponseWrapper<BalanceDTO>(balanceResponse, "Balance fetched successfully");
 
     }
 

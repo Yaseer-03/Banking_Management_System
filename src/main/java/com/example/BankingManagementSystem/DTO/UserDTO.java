@@ -16,9 +16,9 @@ public class UserDTO {
     private String lastName;
     private String mobileNumber;
     private String email;
-    private LocalDate dateOfBirth;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String dateOfBirth;
+    private String createdAt;
+    private String updatedAt;
 
     private UserAddressDetailsDTO userAddressDetails;
     

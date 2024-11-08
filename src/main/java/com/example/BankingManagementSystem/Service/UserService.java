@@ -96,15 +96,26 @@ public class UserService {
     // * Method to map User entity to UserDTO
     private UserDTO mapToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
+
+        // Define the date formatter
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateAndTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss - dd/MM/yyyy");
+
         userDTO.setUserId(user.getUserId());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setMobileNumber(user.getMobileNumber());
         userDTO.setEmail(user.getEmail());
-        userDTO.setDateOfBirth(user.getDateOfBirth());
-        userDTO.setCreatedAt(user.getCreatedAt());
-        userDTO.setUpdatedAt(user.getUpdatedAt());
-        Optional<UserAddressDetails> fetchingUserAddressDetails = userAddressDetailsRepo.findByUser_UserId(user.getUserId());
+
+        // Format dates and set them
+        userDTO.setDateOfBirth(user.getDateOfBirth().format(dateFormatter));
+        userDTO.setCreatedAt(user.getCreatedAt().format(dateAndTimeFormatter));
+        userDTO.setUpdatedAt(user.getUpdatedAt().format(dateAndTimeFormatter));
+        // userDTO.setDateOfBirth(user.getDateOfBirth());
+        // userDTO.setCreatedAt(user.getCreatedAt());
+        // userDTO.setUpdatedAt(user.getUpdatedAt());
+        Optional<UserAddressDetails> fetchingUserAddressDetails = userAddressDetailsRepo
+                .findByUser_UserId(user.getUserId());
         fetchingUserAddressDetails.ifPresent(addressDetails -> {
             UserAddressDetailsDTO addressDTO = new UserAddressDetailsDTO();
             addressDTO.setId(addressDetails.getId());
