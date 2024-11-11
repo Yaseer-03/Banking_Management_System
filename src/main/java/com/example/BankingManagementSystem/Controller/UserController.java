@@ -2,11 +2,14 @@ package com.example.BankingManagementSystem.Controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.BankingManagementSystem.Dto.*;
 import com.example.BankingManagementSystem.Request.*;
 import com.example.BankingManagementSystem.Service.*;
+
+// import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,11 +35,11 @@ public class UserController {
 
     }
 
-    // * Retrieving all user's
-    @GetMapping("/getUsers")
-    public List<UserDTO> getMethodName() {
-        return userService.getAllUsers();
-    }
+    // // * Retrieving all user's
+    // @GetMapping(value = "/getUsers", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    // public Flux<UserDTO> getMethodName() {
+    //     return userService.getAllUsers();
+    // }
 
     // * Retrieving single user based on user id
     @GetMapping("/getUser/{mobileNumber}")

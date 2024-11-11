@@ -3,17 +3,20 @@ package com.example.BankingManagementSystem.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.Duration;
 import jakarta.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Optional;
+import reactor.core.publisher.Flux;
 import com.example.BankingManagementSystem.CustomClasses.UserValidations;
 import com.example.BankingManagementSystem.Dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.BankingManagementSystem.Model.*;
+// import com.example.BankingManagementSystem.ReactiveRepository.ReactiveUserRepo;
 import com.example.BankingManagementSystem.Repository.UserAddressDetailsRepo;
 import com.example.BankingManagementSystem.Repository.UserRepo;
 import com.example.BankingManagementSystem.Request.*;
@@ -28,6 +31,8 @@ public class UserService {
     private UserValidations userValidations;
     @Autowired
     private UserRepo userRepo;
+    // @Autowired
+    // private ReactiveUserRepo reactiveUserRepo;
 
     // * User registration
     public String registeringUser(UserRequest userRequest) {
@@ -68,18 +73,24 @@ public class UserService {
                 + "\n Please use the above user id to register you address details";
     }
 
-    // TODO: Implement reactive programming for the below method.
-    // * Retrieving all users
-    public List<UserDTO> getAllUsers() {
-        List<User> users = userRepo.findAll();
-        List<UserDTO> userDTOs = users.stream()
-                .map(this::mapToUserDTO)
-                .collect(Collectors.toList());
-        return userDTOs;
-    }
+    // // TODO: Implement reactive programming for the below method.
+    // // * Retrieving all users
+    // public List<UserDTO> getAllUsers() {
+    // List<User> users = userRepo.findAll();
+    // List<UserDTO> userDTOs = users.stream()
+    // .map(this::mapToUserDTO)
+    // .collect(Collectors.toList());
+    // return userDTOs;
+    // }
 
-    // * Retrieving user by unique column ( we are considering mobile number as
-    // unique )
+    // public Flux<UserDTO> getAllUsers() {
+    //     return reactiveUserRepo.findAll()
+    //             .map(this::mapToUserDTO)
+    //             .delayElements(Duration.ofMillis(100)); // This introduces a delay between each element emission
+    // }
+    
+
+    // * Retrieving user by unique column ( we are considering mobile number as unique )
     public ResponseWrapper<UserDTO> getUserByMobileNumber(String mobileNumber) {
         Optional<User> fetchingUser = userRepo.findByMobileNumber(mobileNumber);
 
@@ -97,7 +108,7 @@ public class UserService {
     private UserDTO mapToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
-        // Define the date formatter
+        // * Define the date formatter
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter dateAndTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss - dd/MM/yyyy");
 
@@ -107,13 +118,11 @@ public class UserService {
         userDTO.setMobileNumber(user.getMobileNumber());
         userDTO.setEmail(user.getEmail());
 
-        // Format dates and set them
+        // * Format dates and set them
         userDTO.setDateOfBirth(user.getDateOfBirth().format(dateFormatter));
         userDTO.setCreatedAt(user.getCreatedAt().format(dateAndTimeFormatter));
         userDTO.setUpdatedAt(user.getUpdatedAt().format(dateAndTimeFormatter));
-        // userDTO.setDateOfBirth(user.getDateOfBirth());
-        // userDTO.setCreatedAt(user.getCreatedAt());
-        // userDTO.setUpdatedAt(user.getUpdatedAt());
+
         Optional<UserAddressDetails> fetchingUserAddressDetails = userAddressDetailsRepo
                 .findByUser_UserId(user.getUserId());
         fetchingUserAddressDetails.ifPresent(addressDetails -> {
@@ -161,7 +170,7 @@ public class UserService {
             return new ResponseWrapper<>(null, "No user found with mobile number: " + mobileNumber);
         User user = fetchingUser.get();
 
-        // If user exists, check if the request body is provided
+        // * If user exists, check if the request body is provided
         if (updateUserDetails == null) {
             return new ResponseWrapper<>(null, "Request body is required to update user details.");
         }
