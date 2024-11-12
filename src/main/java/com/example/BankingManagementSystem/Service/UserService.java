@@ -90,12 +90,12 @@ public class UserService {
     }
 
     // * Setting mpin for the user
-    public ResponseWrapper<UserDTO> settingMpin(Long userId, MpinRequest mpinRequest) {
+    public ResponseWrapper<UserDTO> settingMpin(String mobileNumber, MpinRequest mpinRequest) {
 
         // * Fetch user and handle case where user is not found
-        Optional<User> optionalUser = userRepo.findById(userId);
+        Optional<User> optionalUser = userRepo.findByMobileNumber(mobileNumber);
         if (optionalUser.isEmpty()) {
-            return new ResponseWrapper<UserDTO>(null, "No user found with id: " + userId); // Return user not found
+            return new ResponseWrapper<UserDTO>(null, "No user found with mobile number: " + mobileNumber); // Return user not found
                                                                                            // message
         }
 
