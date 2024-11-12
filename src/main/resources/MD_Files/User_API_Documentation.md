@@ -193,4 +193,5 @@ This documentation outlines the available endpoints for managing user accounts, 
    - **User Entity**:
      - Aadhar Card: Encrypt all but the last four digits.
      - Mobile Number: Encrypt all but the last four digits (optional).
-     - MPIN: Fully encrypt.
+     - MPIN: Fully encrypt. 
+     **Status** Done
