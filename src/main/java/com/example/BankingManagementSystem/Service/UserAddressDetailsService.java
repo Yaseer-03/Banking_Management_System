@@ -13,7 +13,10 @@ import com.example.BankingManagementSystem.Model.UserAddressDetails;
 import com.example.BankingManagementSystem.Repository.*;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserAddressDetailsService {
 
     @Autowired
@@ -30,6 +33,7 @@ public class UserAddressDetailsService {
         UserAddressDetailsDTO userAddressDetailsDTO = new UserAddressDetailsDTO();
         userAddressDetailsDTO.setStreet(userAddressDetails.getStreet());
         userAddressDetailsDTO.setCity(userAddressDetails.getCity());
+        userAddressDetailsDTO.setDistrict(userAddressDetails.getDistrict());
         userAddressDetailsDTO.setState(userAddressDetails.getState());
         userAddressDetailsDTO.setZipcode(userAddressDetails.getZipcode());
         userAddressDetailsDTO.setId(userAddressDetails.getUser().getUserId());
@@ -39,8 +43,9 @@ public class UserAddressDetailsService {
     // * Adding address detailss
     public ResponseWrapper<UserAddressDetailsDTO> addingUserAddress(Long userId,
             UserAddressDetailsRequest userAddressDetailsRequest) {
-        // * Fetch the registered user from the database
+
         Optional<User> fetchingUser = userRepo.findById(userId);
+
         if (fetchingUser.isEmpty())
             return new ResponseWrapper<UserAddressDetailsDTO>(null, "user not found with id: " + userId);
 
@@ -58,6 +63,7 @@ public class UserAddressDetailsService {
         UserAddressDetails userAddressDetails = new UserAddressDetails();
         userAddressDetails.setStreet(userAddressDetailsRequest.getStreet());
         userAddressDetails.setCity(userAddressDetailsRequest.getCity());
+        userAddressDetails.setDistrict(userAddressDetailsRequest.getDistrict());
         userAddressDetails.setState(userAddressDetailsRequest.getState());
         userAddressDetails.setZipcode(userAddressDetailsRequest.getZipcode());
 
