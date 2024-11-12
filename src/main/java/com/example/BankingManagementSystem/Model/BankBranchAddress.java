@@ -12,7 +12,8 @@ public class BankBranchAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                    // Unique id to identify the unique row
-                             
+                       
+    private String ifscCode;
     private String branchName;
     private String city;
     private String district;

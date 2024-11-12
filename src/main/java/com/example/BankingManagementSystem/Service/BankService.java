@@ -27,7 +27,6 @@ public class BankService {
         BankDTO convertingBankDTO = new BankDTO();
         convertingBankDTO.setId(savedBank.getId());
         convertingBankDTO.setBankName(savedBank.getBankName());
-        convertingBankDTO.setIfscCode(savedBank.getIfscCode());
         return convertingBankDTO;
     }
 
@@ -43,14 +42,9 @@ public class BankService {
         return branches.get(randomIndex);
     }
 
-    // * Adding bank
     public ResponseWrapper<BankDTO> addBank(BankRequest bankRequest) {
         Bank bank = new Bank();
         bank.setBankName(bankRequest.getBankName());
-        bank.setIfscCode(bankRequest.getIfscCode());
-        // Assign a random bank branch address
-        BankBranchAddress branchAddress = assignRandomBankBranchAddress();
-        // bank.setBankBranchAddress(branchAddress);
         Bank savedBank = bankRepo.save(bank);
         BankDTO response = mapToDto(savedBank);
         return new ResponseWrapper<>(response, null);
