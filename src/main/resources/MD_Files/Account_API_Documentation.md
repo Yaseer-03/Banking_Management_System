@@ -116,7 +116,7 @@ This document outlines the endpoints for managing account-related operations suc
 
  ## Testing Checklist:
  - Create seperate package to handle exception. **Status** Incomplete.
- - verify null checks once & break validations in request **Status** Incomplete.
+ - verify null checks once & break validations to verify validations in request **Status** Incomplete.
 
  #### Sensitive Data Encryption Requirements
 - Account number (last four digits should not be encrypted).

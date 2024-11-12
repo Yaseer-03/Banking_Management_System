@@ -70,3 +70,6 @@ This documentation outlines the available endpoints for managing bank records, i
 
 
 ## **Handled by Super Admin**
+
+## Need to implement
+- Develop ifsc code for individual branch 
