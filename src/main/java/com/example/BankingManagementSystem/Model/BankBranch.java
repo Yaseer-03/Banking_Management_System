@@ -7,19 +7,23 @@ import lombok.Data;
 
 @Data
 @Entity
-public class BankBranchAddress {
+public class BankBranch{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                    // Unique id to identify the unique row
-                             
+                       
+    @Column(unique = true, nullable = false)
+    private String ifscCode;
+    private String branchCode;
     private String branchName;
+    private String address;
     private String city;
     private String district;
     private String state;
     private String zipcode;                             
     
-    @OneToMany(mappedBy = "bankBranchAddress", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ifscCode", cascade = CascadeType.ALL)
     private List<Account> accounts;
     
 }

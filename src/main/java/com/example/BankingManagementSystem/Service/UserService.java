@@ -91,9 +91,15 @@ public class UserService {
 
     // * Setting mpin for the user
     public ResponseWrapper<UserDTO> settingMpin(String mobileNumber, MpinRequest mpinRequest) {
-
+        String encryptedMobileNumber =  null;
+        try{
+            encryptedMobileNumber = encryptionUtil.encrypt(mobileNumber);
+        }
+        catch(Exception e){
+            return new ResponseWrapper<UserDTO>(null, "Error occured while encrypting");
+        }
         // * Fetch user and handle case where user is not found
-        Optional<User> optionalUser = userRepo.findByMobileNumber(mobileNumber);
+        Optional<User> optionalUser = userRepo.findByMobileNumber(encryptedMobileNumber);
         if (optionalUser.isEmpty()) {
             return new ResponseWrapper<UserDTO>(null, "No user found with mobile number: " + mobileNumber); // Return user not found
                                                                                            // message
