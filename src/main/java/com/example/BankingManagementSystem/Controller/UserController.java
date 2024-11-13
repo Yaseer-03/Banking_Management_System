@@ -30,6 +30,12 @@ public class UserController {
         return userService.settingMpin(mobileNumber, mpinRequest);
     }
 
+    // * Update mpin
+    @PutMapping("/update-mpin")
+    public ResponseWrapper<UserDTO> updateMpin (@RequestParam String mobileNumber, @RequestBody(required = false) MpinRequest mpinRequest){
+        return userService.settingMpin(mobileNumber, mpinRequest);
+    }
+
     // * Updating user details based on the mobile number
     @PutMapping("/updateUser/{mobileNumber}")
     public ResponseWrapper<UserDTO> updatingUser(@PathVariable String mobileNumber,

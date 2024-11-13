@@ -2,6 +2,8 @@ package com.example.BankingManagementSystem.CustomClasses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.BankingManagementSystem.Encryption.EncryptionUtil;
 import com.example.BankingManagementSystem.Repository.UserRepo;
 import com.example.BankingManagementSystem.Request.MpinRequest;
 import com.example.BankingManagementSystem.Request.UserAddressDetailsRequest;
@@ -14,6 +16,9 @@ import java.util.regex.Pattern;
 
 @Component
 public class UserValidations {
+
+    @Autowired
+    private EncryptionUtil encryptionUtil;
 
     @Autowired
     private UserRepo userRepo;
@@ -86,23 +91,33 @@ public class UserValidations {
             return "Please enter your mobile number";
         if (!isMobileNumberValid(userRequest.getMobileNumber()))
             return "Please enter a valid mobile number";
-        if (userRepo.existsByMobileNumber(userRequest.getMobileNumber()))
-            return "Mobile number is already in use..!";
-        if (isNull(userRequest.getAadharNumber()))
-            return "Please enter your Aadhaar number";
-        if (!isAadharValid(userRequest.getAadharNumber()))
-            return "Please enter a valid Aadhaar number";
-        if (userRepo.existsByAadharNumber(userRequest.getAadharNumber()))
-            return "Aadhar number is already in use..!";
+        // Encrypt and check if the mobile number already exists
+
+        try {
+            String encryptedMobileNumber = encryptionUtil.encrypt(userRequest.getMobileNumber());
+            String encryptedAadharNumber = encryptionUtil.encrypt(userRequest.getAadharNumber());
+            String encryptedEmail = encryptionUtil.encrypt(userRequest.getEmail());
+            if (userRepo.existsByMobileNumber(encryptedMobileNumber))
+                return "Mobile number is already in use..!";
+            if( userRepo.existsByAadharNumber(encryptedAadharNumber))
+            return "Aadhaar number is already in use..!";
+                if (userRepo.existsByEmail(encryptedEmail))
+                return "Email already in use..!";
+
+                
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+      
         if (isNull(userRequest.getEmail()))
             return "Please enter your email";
         if (!isEmailValid(userRequest.getEmail()))
             return "Please enter a valid email";
-        if (userRepo.existsByEmail(userRequest.getEmail()))
-            return "Email already in use..!";
+        
         if (isNull(userRequest.getDateOfBirth()))
             return "Please enter your date of birth";
-            
+
         return null; // * No validation errors
     }
 

@@ -96,7 +96,7 @@ public class UserService {
             encryptedMobileNumber = encryptionUtil.encrypt(mobileNumber);
         }
         catch(Exception e){
-            return new ResponseWrapper<UserDTO>(null, "Error occured while encrypting");
+            return new ResponseWrapper<UserDTO>(null, "Error occured while encrypting mpin");
         }
         // * Fetch user and handle case where user is not found
         Optional<User> optionalUser = userRepo.findByMobileNumber(encryptedMobileNumber);
@@ -115,8 +115,12 @@ public class UserService {
 
         // * Encrypt the MPIN before saving
         try {
-            String encryptedMpin = encryptionUtil.encrypt(mpinRequest.getMpin());
-            user.setMpin(encryptedMpin); // Set the encrypted MPIN
+
+            String encryptedExistedMpin = user.getMpin();
+            String newEncryptedMpin = encryptionUtil.encrypt(mpinRequest.getMpin());
+            
+            if(newEncryptedMpin.equals(encryptedExistedMpin)) return new ResponseWrapper<UserDTO>(null, "New MPIN is the same as the current one. No update needed."); 
+            user.setMpin(newEncryptedMpin); // Set the encrypted MPIN
         } catch (Exception e) {
             return new ResponseWrapper<>(null, "Error encrypting MPIN");
         }
