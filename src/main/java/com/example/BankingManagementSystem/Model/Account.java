@@ -32,8 +32,8 @@ public class Account {
     private Bank bank;
 
     @ManyToOne
-    @JoinColumn(name = "bank_branch_address_id", nullable = false)
-    private BankBranchAddress bankBranchAddress;
+    @JoinColumn(name = "ifsc_code", referencedColumnName = "ifscCode", nullable = false)
+    private BankBranch ifscCode;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Transaction> transactions;  

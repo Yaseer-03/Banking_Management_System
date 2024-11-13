@@ -26,8 +26,8 @@ public class UserController {
 
     // * Creating mpin
     @PostMapping("/signup/mpin")
-    public ResponseWrapper<UserDTO> userMpinCreation(@RequestParam Long userId, @RequestBody MpinRequest mpinRequest) {
-        return userService.settingMpin(userId, mpinRequest);
+    public ResponseWrapper<UserDTO> userMpinCreation(@RequestParam String mobileNumber,@RequestBody(required = false) MpinRequest mpinRequest) {
+        return userService.settingMpin(mobileNumber, mpinRequest);
     }
 
     // * Updating user details based on the mobile number

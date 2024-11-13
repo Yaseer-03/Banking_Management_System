@@ -7,14 +7,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import com.example.BankingManagementSystem.Model.*;
 import com.example.BankingManagementSystem.Repository.*;
 import com.example.BankingManagementSystem.Request.AccountRequest;
-import com.example.BankingManagementSystem.Request.BalanceRequest;
 import jakarta.transaction.Transactional;
 import com.example.BankingManagementSystem.CustomClasses.*;
 import com.example.BankingManagementSystem.Dto.*;
+import com.example.BankingManagementSystem.Encryption.EncryptionUtil;
 
 @Service
 @Transactional
@@ -33,16 +32,28 @@ public class AccountService {
     private BankService bankService;
 
     @Autowired
+    private EncryptionUtil encryptionUtil;
+
+    @Autowired
     private AccountValidation accountValidation;
 
-    public ResponseWrapper<AccountDTO> creatingAccount(Long userId, AccountRequest accountRequest) {
-        Optional<User> fetchingUser = userRepo.findById(userId);
-        if (fetchingUser.isEmpty())
-            return new ResponseWrapper<>(null, "User not found with ID: " + userId);
+    public ResponseWrapper<AccountDTO> creatingAccount(String mobileNumber, AccountRequest accountRequest) {
+        String encryptedMobileNumber = null;
+        try{
+            encryptedMobileNumber = encryptionUtil.encrypt(mobileNumber);
+        }catch(Exception e){
+            return new ResponseWrapper<AccountDTO>(null, "Error occured while encrypting mobile number" + e.getMessage());
+        }
+        Optional<User> fetchingUser = userRepo.findByMobileNumber(encryptedMobileNumber);
 
+        if (fetchingUser.isEmpty())
+            return new ResponseWrapper<>(null, "User not found with mobile number: " + encryptedMobileNumber);
+
+        User user = fetchingUser.get();
+        Long userId = user.getUserId();
         Optional<Account> fetchingExistingAccountForUser = accountRepo.findByUser_UserId(userId);
         if (fetchingExistingAccountForUser.isPresent()) {
-            return new ResponseWrapper<>(null, "Account already exists for the user with ID: " + userId);
+            return new ResponseWrapper<>(null, "Account already exists with mobile number: " + mobileNumber);
         }
 
         // * Validate fields
@@ -51,10 +62,8 @@ public class AccountService {
             return new ResponseWrapper<>(null, validationError);
         }
 
-        // String hashedMpin = hashMpin(accountRequest.getPin());
-        User user = fetchingUser.get();
         Account account = new Account();
-
+        
         Bank fetchingBank = bankRepo.findByBankName("STATE BANK OF INDIA");
 
         String generatedAccountNumber = AccountNumberGenerator.generateUniqueAccountNumber();
@@ -71,8 +80,8 @@ public class AccountService {
         account.setAccountType("SAVINGS");
         account.setAccountStatus("ACTIVE");
         account.setUser(user);
-        BankBranchAddress branchAddressId = bankService.assignRandomBankBranchAddress();
-        account.setBankBranchAddress(branchAddressId);
+        BankBranch randomBranch = bankService.assignRandomBankBranchAddress();
+        account.setIfscCode(randomBranch);
         account.setBank(fetchingBank);
         account.setBalance(balance); // Assign the balance to the account
 
@@ -112,26 +121,27 @@ public class AccountService {
         accountDTO.setAccountType(account.getAccountType());
         accountDTO.setAccountStatus(account.getAccountStatus());
 
-        BankBranchAddressDTO branchAddressDTO = null;
-        // Set BankBranchAddressDTO
-        if (account.getBankBranchAddress() != null) {
-            branchAddressDTO = new BankBranchAddressDTO();
-            branchAddressDTO.setId(account.getBankBranchAddress().getId());
-            branchAddressDTO.setBranchName(account.getBankBranchAddress().getBranchName());
-            branchAddressDTO.setStreet(account.getBankBranchAddress().getState());
-            branchAddressDTO.setCity(account.getBankBranchAddress().getCity());
-            branchAddressDTO.setState(account.getBankBranchAddress().getState());
-            branchAddressDTO.setZipcode(account.getBankBranchAddress().getZipcode());
+         // Mapping BankBranchDTO
+    BankBranchDTO bankBranchDTO = null;
+    if (account.getIfscCode() != null) {
+        bankBranchDTO = new BankBranchDTO();
+        BankBranch bankBranch = account.getIfscCode();  // BankBranch from "ifscCode"
 
+        // Assuming BankBranch has fields for address
+        if (bankBranch != null) {
+            bankBranchDTO.setId(bankBranch.getId());
+            bankBranchDTO.setIfscCode(bankBranch.getIfscCode());
+            bankBranchDTO.setDistrict(bankBranch.getDistrict());
+            bankBranchDTO.setBranchName(bankBranch.getBranchName());
+            bankBranchDTO.setBranchCode(bankBranch.getBranchCode());  // Assumes BankBranch has branchName field
+            bankBranchDTO.setAddress(bankBranch.getAddress());          // Assuming street is part of BankBranch
+            bankBranchDTO.setCity(bankBranch.getCity());
+            bankBranchDTO.setState(bankBranch.getState());
+            bankBranchDTO.setZipcode(bankBranch.getZipcode());
         }
-        accountDTO.setBankBranchAddressDTO(branchAddressDTO);
+    }
+        accountDTO.setBankBranchDetails(bankBranchDTO);
 
         return accountDTO;
     }
-
-    // Method to hash the MPIN
-    // private String hashMpin(String mpin) {
-    // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    // return encoder.encode(mpin);
-    // }
 }
