@@ -120,7 +120,7 @@ This document outlines the endpoints for managing account-related operations suc
  ## Testing Checklist:
  - Create seperate package to handle exception. **Status** Incomplete.
  - verify null checks once & break validations in request **Status** Incomplete.
- - change branch_address_id to ifscCode **Status** Incomplete.
+ - change branch_address_id to ifscCode **Status** Complete.
 
  #### Sensitive Data Encryption Requirements
 - Account number (last four digits should not be encrypted).
